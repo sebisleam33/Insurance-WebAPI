@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Insurance.Domain.Entities.Geography;
 
-namespace Insurance.Domain.Entities.Geography
-{
-    internal class City
+    public class City
     {
+        public int Id { get; set; }
+        public string Name { get; set; } = null!;
+        public int CountyId  { get; set; }
+        public County county { get; set; } = null!;
+        public ICollection<Building> Buildings { get; set; } = new List<Building>;
     }
-}
+

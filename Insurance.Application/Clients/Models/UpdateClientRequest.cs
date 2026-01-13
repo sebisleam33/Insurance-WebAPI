@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Insurance.Application.Clients.Models;
 
-namespace Insurance.Application.Clients.Models
-{
-    internal class UpdateClientRequest
+    public sealed class UpdateClientRequest
     {
+        public string Name { get; init; } = null!;
+        public string? Email { get; init; }
+        public string? Phone { get; init; }
+        public string? PrimaryAddress { get; init; }
     }
-}

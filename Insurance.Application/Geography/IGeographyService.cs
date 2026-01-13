@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Insurance.Application.Clients.Models
+namespace Insurance.Application.Geography
 {
-    internal class ClientDetailResponse
+    internal class IGeographyService
     {
     }
 }

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Insurance.Application.Common.Exceptions;
 
-namespace Insurance.Application.Common.Exceptions
-{
-    internal class ValidationException
+    public sealed class ValidationException : AppException
     {
+        public ValidationException(string message, object? details = null) : base(message) => _details = details;
+
+        private readonly object? _details;
+        public override int StatusCode => 400;
+        public override object? Details => _details;
     }
-}

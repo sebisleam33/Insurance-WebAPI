@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Insurance.Domain.Enums
-{
-    internal class BuildingType
+﻿namespace Insurance.Domain.Enums;
+    public enum BuildingType
     {
+        Residential = 1,
+        Office = 2,
+        Industrial = 3
     }
-}

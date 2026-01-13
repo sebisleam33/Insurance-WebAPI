@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Insurance.Application.Common.Exceptions;
 
-namespace Insurance.Application.Common.Exceptions
-{
-    internal class NotFoundException
+    public sealed class NotFoundException : AppException
     {
+        public NotFoundException (string message) : base (message) { }
+
+        public override int StatusCode => 404;
     }
-}

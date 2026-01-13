@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Insurance.Domain.Enums
-{
-    internal class ClientType
+﻿namespace Insurance.Domain.Enums;
+    public enum ClientType
     {
+        Individual = 1,
+        Company = 2
     }
-}

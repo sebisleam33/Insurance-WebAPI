@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Insurance.Domain.Enums;
 
-namespace Insurance.Application.Clients.Models
-{
-    internal class CreateClientRequest
+namespace Insurance.Application.Clients.Models;
+
+    public sealed class CreateClientRequest
     {
+        public ClientType  Type { get; init; }
+        public string Name { get; init; } = null!;
+        public string IdentificationNumber { get; init; } = null!;
+        public string? Email {  get; init; }
+        public string? Phone { get; init; }
+        public string? PrimaryAddress { get; init; }
     }
-}
