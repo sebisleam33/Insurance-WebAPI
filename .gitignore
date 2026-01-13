@@ -1,0 +1,80 @@
+# Ignore Rider project files
+.idea/
+ 
+# Ignore Rider's user-specific settings
+*.sln.iml
+ 
+# Ignore build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+ 
+# Ignore user-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.rsuser
+ 
+# Ignore Visual Studio-related caches
+.vs/
+ 
+# Ignore NuGet packages
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+**/packages/*
+ 
+# Ignore generated files
+*.dll
+*.exe
+*.pdb
+*.mdb
+*.dbmdl
+ 
+# Ignore backup & temporary files
+*~
+*.swp
+*.tmp
+ 
+# Ignore test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+ 
+# Ignore coverage results
+*.coverage
+*.coveragexml
+*.cov
+ 
+# Ignore publish output
+publish/
+dist/
+out/
+ 
+# Ignore dotnet user secrets
+**/secrets.json
+*.local.json
+ 
+# Ignore environment files
+.env
+.env.*
+ 
+# Ignore Rider caches and other hidden IDE folders
+.idea/
+.udea/
+ 
+# Optional: OS-specific ignores
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+ 
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+ 
+# Linux
+*~
