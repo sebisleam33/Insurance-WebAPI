@@ -3,7 +3,7 @@ using Insurance.Domain.Enums;
 
 namespace Insurance.Application.Clients.Models;
 
-    public sealed class ClientDetailResponse
+    public sealed class ClientDetailsResponse
     {
         public Guid Id { get; init; }
         public ClientType Type { get; init; }

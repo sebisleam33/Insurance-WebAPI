@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Insurance.Application.Geography.Models;
 
-namespace Insurance.Application.Geography.Models
-{
-    internal class GeographyResponse
+    public sealed class CountryResponse
     {
+        public int Id { get; init; }
+        public string Name { get; init; } = null!;
     }
-}
+
+    public sealed class CountyResponse
+    { 
+        public int Id { get; init; }
+        public string Name { get; init; } = null!;
+        public int CountryId { get; init; }
+    }
+
+    public sealed class CityResponse
+    {
+        public int Id { get; init; }
+        public string Name { get; init; } = null!;
+        public int CountyId { get; init; }
+    }

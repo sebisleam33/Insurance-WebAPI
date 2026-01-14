@@ -8,8 +8,8 @@ using Insurance.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Insurance.Application.Clients
-{
+namespace Insurance.Application.Clients;
+
     public sealed class ClientService : IClientService
     {
         private readonly IAppDbContext _db;
@@ -152,4 +152,3 @@ namespace Insurance.Application.Clients
                 };
         }
     }
-}

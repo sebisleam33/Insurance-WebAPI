@@ -1,6 +1,36 @@
-﻿namespace Insurance.Api.Controllers.Brokers
+﻿using Insurance.Application.Clients;
+using Insurance.Application.Clients.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Insurance.Api.Controllers.Brokers;
+
+[ApiController]
+[Route("api/brokers/clients")]
+public class ClientsController : ControllerBase
 {
-    public class ClientsController
+    private readonly IClientService _service;
+
+    public ClientsController(IClientService service) => _service = service;
+
+    [HttpGet]
+    public async Task<IActionResult> Search([FromQuery] string? name, [FromQuery] string? identifier, [FromQuery] int page = 1, [FromQuery] int pageSize = 20, CancellationToken ct = default)
+        => Ok(await _service.SearchAsync(name, identifier, page, pageSize, ct));
+
+    [HttpGet("{clientId:guid}")]
+    public async Task<IActionResult> GetById(Guid clientId, CancellationToken ct = default)
+        => Ok(await _service.GetByIdAsync(clientId, ct));
+
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateClientRequest request, CancellationToken ct = default)
     {
+        var id = await _service.CreateAsync(request, ct);
+        return CreatedAtAction(nameof(GetById), new { clientId = id }, new { id });
+    }
+
+    [HttpPut("{clientId:guid}")]
+    public async Task<IActionResult> Update(Guid clientId, [FromBody] UpdateClientRequest request, CancellationToken ct = default)
+    {
+        await _service.UpdateAsync(clientId, request, ct);
+        return NoContent();
     }
 }

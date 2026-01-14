@@ -7,10 +7,10 @@ namespace Insurance.Application.Abstractions;
     public interface IAppDbContext
     {
         DbSet<Client> Clients { get; }
-        DbSet<Country> Countries{ get; }
         DbSet<Building> Buildings { get; }
+        DbSet<Country> Countries { get; }
         DbSet<County> Counties { get; }
         DbSet<City> Cities { get; }
 
-        Task<int> SaveChangesAsync (CancellationToken cancellationToken = default);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

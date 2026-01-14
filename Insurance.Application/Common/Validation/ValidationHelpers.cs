@@ -26,7 +26,7 @@ namespace Insurance.Application.Common.Validation;
 
         public static void RequireRange(int value, int min, int max, string fieldName)
         {
-            if (value < min || value < max)
+            if (value < min || value > max)
             {
                 throw new ValidationException($"{fieldName} must be between {min} and {max}.");
             }
