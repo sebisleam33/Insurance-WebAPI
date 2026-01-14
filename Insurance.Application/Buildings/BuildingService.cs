@@ -153,7 +153,7 @@ namespace Insurance.Application.Buildings;
                 throw new NotFoundException("Client does not exist.");
             }
 
-            var query = _db.Buildings.AsNoTracking().Where(x => x.Id == clientId);
+            var query = _db.Buildings.AsNoTracking().Where(x => x.ClientId == clientId);
 
             var total = await query.CountAsync(ct);
 
