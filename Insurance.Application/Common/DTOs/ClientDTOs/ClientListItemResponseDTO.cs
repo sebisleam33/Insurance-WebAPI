@@ -1,8 +1,8 @@
 ﻿using Insurance.Domain.Enums;
 
-namespace Insurance.Application.Clients.Models;
+namespace Insurance.Application.Common.DTOs.ClientDTOs;
 
-    public sealed class ClientListItemResponse
+public sealed class ClientListItemResponseDTO
     {
         public Guid Id { get; init; }
         public ClientType Type { get; init; }

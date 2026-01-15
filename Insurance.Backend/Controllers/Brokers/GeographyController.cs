@@ -1,4 +1,4 @@
-﻿using Insurance.Application.Geography;
+﻿using Insurance.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Insurance.Api.Controllers.Brokers;

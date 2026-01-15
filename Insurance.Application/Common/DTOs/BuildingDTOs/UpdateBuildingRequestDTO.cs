@@ -1,11 +1,11 @@
 ﻿using Insurance.Domain.Enums;
 
-namespace Insurance.Application.Buildings.Models;
+namespace Insurance.Application.Common.DTOs.BuildingDTOs;
 
-    public sealed class CreateBuildingRequest
+public sealed class UpdateBuildingRequestDTO
     {
+        public string Number { get; init; } = null!;
         public string Street { get; init; } = null!;
-        public string Number {  get; init; } = null!;
         public int CityId { get; init; }
 
         public int ConstructionYear {  get; init; }

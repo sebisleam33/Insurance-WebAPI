@@ -1,6 +1,6 @@
-﻿namespace Insurance.Application.Buildings.Models;
+﻿namespace Insurance.Application.Common.DTOs.BuildingDTOs;
 
-    public sealed class BuildingListItemResponse
+public sealed class BuildingListItemResponseDTO
     {
         public Guid Id { get; init; }
         public string Street { get; init; } = null!;

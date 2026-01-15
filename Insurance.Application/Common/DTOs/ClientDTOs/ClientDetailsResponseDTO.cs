@@ -1,9 +1,9 @@
-﻿using Insurance.Application.Buildings.Models;
+﻿using Insurance.Application.Common.DTOs.BuildingDTOs;
 using Insurance.Domain.Enums;
 
-namespace Insurance.Application.Clients.Models;
+namespace Insurance.Application.Common.DTOs.ClientDTOs;
 
-    public sealed class ClientDetailsResponse
+    public sealed class ClientDetailsResponseDTO
     {
         public Guid Id { get; init; }
         public ClientType Type { get; init; }
@@ -13,5 +13,5 @@ namespace Insurance.Application.Clients.Models;
         public string? Phone { get; init; } = null!;
         public string? PrimaryAddress { get; init; } = null!;
 
-        public IReadOnlyList<BuildingListItemResponse> Buildings { get; init; } = Array.Empty<BuildingListItemResponse>();
+        public IReadOnlyList<BuildingListItemResponseDTO> Buildings { get; init; } = Array.Empty<BuildingListItemResponseDTO>();
     }

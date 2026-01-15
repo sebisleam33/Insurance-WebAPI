@@ -1,8 +1,8 @@
 ﻿using Insurance.Domain.Enums;
 
-namespace Insurance.Application.Clients.Models;
+namespace Insurance.Application.Common.DTOs.ClientDTOs;
 
-    public sealed class CreateClientRequest
+public sealed class CreateClientRequestDTO
     {
         public ClientType  Type { get; init; }
         public string Name { get; init; } = null!;

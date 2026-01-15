@@ -1,6 +1,6 @@
-﻿namespace Insurance.Application.Clients.Models;
+﻿namespace Insurance.Application.Common.DTOs.ClientDTOs;
 
-    public sealed class UpdateClientRequest
+public sealed class UpdateClientRequestDTO
     {
         public string Name { get; init; } = null!;
         public string? Email { get; init; }

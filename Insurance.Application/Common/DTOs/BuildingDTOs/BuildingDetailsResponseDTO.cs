@@ -1,8 +1,8 @@
 ﻿using Insurance.Domain.Enums;
 
-namespace Insurance.Application.Buildings.Models;
+namespace Insurance.Application.Common.DTOs.BuildingDTOs;
 
-    public sealed class BuildingDetailsResponse
+    public sealed class BuildingDetailsResponseDTO
     {
         public Guid Id { get; init; }
         public Guid ClientId { get; init; }

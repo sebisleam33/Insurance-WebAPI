@@ -1,5 +1,5 @@
-﻿using Insurance.Application.Buildings;
-using Insurance.Application.Buildings.Models;
+﻿using Insurance.Application.Common.DTOs.BuildingDTOs;
+using Insurance.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Insurance.Api.Controllers.Brokers;
@@ -20,14 +20,14 @@ public class BuildingsController : ControllerBase
         => Ok(await _service.GetByIdAsync(buildingId, ct));
 
     [HttpPost("api/brokers/clients/{clientId:guid}/buildings")]
-    public async Task<IActionResult> Create(Guid clientId, [FromBody] CreateBuildingRequest request, CancellationToken ct = default)
+    public async Task<IActionResult> Create(Guid clientId, [FromBody] CreateBuildingRequestDTO request, CancellationToken ct = default)
     {
         var id = await _service.CreateAsync(clientId, request, ct);
         return CreatedAtAction(nameof(GetById), new { buildingId = id }, new { id });
     }
 
     [HttpPut("api/brokers/buildings/{buildingId:guid}")]
-    public async Task<IActionResult> Update(Guid buildingId, [FromBody] UpdateBuildingRequest request, CancellationToken ct = default)
+    public async Task<IActionResult> Update(Guid buildingId, [FromBody] UpdateBuildingRequestDTO request, CancellationToken ct = default)
     {
         await _service.UpdateAsync(buildingId, request, ct);
         return NoContent();

@@ -1,11 +1,10 @@
-﻿using Insurance.Application.Abstractions;
-using Insurance.Domain.Entities;
+﻿using Insurance.Domain.Entities;
 using Insurance.Domain.Entities.Geography;
 using Microsoft.EntityFrameworkCore;
 
 namespace Insurance.Infrastructure.Persistence;
 
-    public sealed class AppDbContext : DbContext, IAppDbContext
+    public sealed class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

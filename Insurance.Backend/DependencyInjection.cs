@@ -1,11 +1,7 @@
-﻿using Insurance.Application.Abstractions;
-using Insurance.Application.Buildings;
-using Insurance.Application.Clients;
-using Insurance.Application.Geography;
+﻿using Insurance.Application.Services.Implementations;
+using Insurance.Application.Services.Interfaces;
 using Insurance.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Insurance.Infrastructure;
 
@@ -20,8 +16,6 @@ namespace Insurance.Infrastructure;
 
                 options.UseSqlite(connectionString);
             });
-
-            services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
 
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IBuildingService, BuildingService>();
