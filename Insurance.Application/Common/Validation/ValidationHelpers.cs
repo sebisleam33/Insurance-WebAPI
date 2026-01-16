@@ -18,7 +18,7 @@ namespace Insurance.Application.Common.Validation;
 
         public static void RequirePositive(decimal value, string fieldName)
         {
-            if (value < 0)
+            if (value <= 0)
             {
                 throw new ValidationException($"{fieldName} must be > 0.");
             }

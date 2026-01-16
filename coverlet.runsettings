@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat Code Coverage">
+        <Configuration>
+          <Format>cobertura</Format>
+
+          <!-- Exclude by file path (most reliable for DTO folders) -->
+          <ExcludeByFile>
+            **/Program.cs
+            **/*DTO*.cs
+            **/DTOs/**/*.cs
+            **/*Migrations*.cs
+            **/DbSeeder.cs
+          </ExcludeByFile>
+
+          <!-- Optional: exclude by attribute -->
+          <ExcludeByAttribute>
+            Obsolete
+            GeneratedCodeAttribute
+            CompilerGeneratedAttribute
+          </ExcludeByAttribute>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

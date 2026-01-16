@@ -1,0 +1,54 @@
+Summary
+  Generated on: 1/16/2026 - 2:09:48 PM
+  Parser: Cobertura
+  Assemblies: 4
+  Classes: 27
+  Files: 26
+  Line coverage: 90.6%
+  Covered lines: 425
+  Uncovered lines: 44
+  Coverable lines: 469
+  Total lines: 905
+  Branch coverage: 94.1% (113 of 120)
+  Covered branches: 113
+  Total branches: 120
+  Method coverage: 98.3% (181 of 184)
+  Full method coverage: 94.5% (174 of 184)
+  Covered methods: 181
+  Fully covered methods: 174
+  Total methods: 184
+
+Insurance.Api                                                                 95.7%
+  Insurance.Api.Controllers.Brokers.BuildingsController                       81.8%
+  Insurance.Api.Controllers.Brokers.ClientsController                         72.7%
+  Insurance.Api.Controllers.Brokers.GeographyController                        100%
+  Insurance.Api.Mapping.ApiMappingProfile                                      100%
+  Insurance.Api.Middleware.ExceptionHandlingMiddleware                         100%
+  Insurance.Api.Middleware.ExceptionHandlingMiddleware.ErrorResponse           100%
+
+Insurance.Application                                                           94%
+  Insurance.Application.Common.Exceptions.AppException                         100%
+  Insurance.Application.Common.Exceptions.BusinessRuleException                100%
+  Insurance.Application.Common.Exceptions.ConflictException                    100%
+  Insurance.Application.Common.Exceptions.ForbiddenException                   100%
+  Insurance.Application.Common.Exceptions.NotFoundException                    100%
+  Insurance.Application.Common.Exceptions.UnauthorizedException                100%
+  Insurance.Application.Common.Exceptions.ValidationException                  100%
+  Insurance.Application.Common.PagedResult<T>                                  100%
+  Insurance.Application.Common.Validation.ValidationHelpers                    100%
+  Insurance.Application.Services.Implementations.BuildingService                93%
+  Insurance.Application.Services.Implementations.ClientService                90.1%
+  Insurance.Application.Services.Implementations.GeographyService              100%
+
+Insurance.Domain                                                               100%
+  Insurance.Domain.Entities.Building                                           100%
+  Insurance.Domain.Entities.Client                                             100%
+  Insurance.Domain.Entities.Geography.City                                     100%
+  Insurance.Domain.Entities.Geography.Country                                  100%
+  Insurance.Domain.Entities.Geography.County                                   100%
+
+Insurance.Infrastructure                                                      78.6%
+  Insurance.Infrastructure.Persistence.AppDbContext                            100%
+  Insurance.Infrastructure.Repositories.Implementations.BuildingRepository    68.7%
+  Insurance.Infrastructure.Repositories.Implementations.ClientRepository        40%
+  Insurance.Infrastructure.Repositories.Implementations.GeographyRepository    100%

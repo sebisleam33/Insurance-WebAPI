@@ -1,8 +1,10 @@
-﻿namespace Insurance.Application.Common.Exceptions;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Insurance.Application.Common.Exceptions;
 
     public sealed class NotFoundException : AppException
     {
         public NotFoundException (string message) : base (message) { }
 
-        public override int StatusCode => 404;
+        public override int StatusCode => StatusCodes.Status404NotFound;
     }
