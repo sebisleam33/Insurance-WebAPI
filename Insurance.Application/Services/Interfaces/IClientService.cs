@@ -10,4 +10,5 @@ public interface IClientService
     Task<ClientDetailsResponseDTO> GetByIdAsync(Guid clientId, CancellationToken ct = default);
     Task<PagedResult<ClientListItemResponseDTO>> SearchAsync(
         string? name, string? identifier, int page, int pageSize, CancellationToken ct = default);
+    Task ChangeIdentifierAsync(Guid clientId, ChangeClientIdentifierRequestDTO request, CancellationToken ct = default);
 }

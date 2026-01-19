@@ -28,6 +28,12 @@ public sealed class ClientRepository : IClientRepository
         return await query.FirstOrDefaultAsync(x => x.Id == clientId, ct);
     }
 
+    public Task AddIdentifierChangeAsync(ClientIdentifierChange change, CancellationToken ct = default)
+    {
+        _db.ClientIdentifierChanges.Add(change);
+        return Task.CompletedTask;
+    }
+
     public async Task<(IReadOnlyList<Client> Items, int TotalCount)> SearchAsync(
         string? name, string? identifier, int page, int pageSize, CancellationToken ct = default)
     {

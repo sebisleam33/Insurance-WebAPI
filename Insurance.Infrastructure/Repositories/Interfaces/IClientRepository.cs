@@ -14,4 +14,5 @@ public interface IClientRepository
         string? name, string? identifier, int page, int pageSize, CancellationToken ct = default);
 
     Task SaveChangesAsync(CancellationToken ct = default);
+    Task AddIdentifierChangeAsync(ClientIdentifierChange change, CancellationToken ct = default);
 }

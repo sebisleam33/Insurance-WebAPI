@@ -1,6 +1,7 @@
 ﻿using Insurance.Domain.Entities;
 using Insurance.Domain.Entities.Geography;
 using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 
 namespace Insurance.Infrastructure.Persistence;
 
@@ -13,6 +14,7 @@ namespace Insurance.Infrastructure.Persistence;
         public DbSet<Country> Countries => Set<Country>();
         public DbSet<County> Counties => Set<County>();
         public DbSet<City> Cities => Set<City>();
+        public DbSet<ClientIdentifierChange> ClientIdentifierChanges => Set<ClientIdentifierChange>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -70,5 +72,21 @@ namespace Insurance.Infrastructure.Persistence;
 
                 b.HasIndex(x => new { x.CountyId, x.Name }).IsUnique();
             });
-        }
+
+            modelBuilder.Entity<ClientIdentifierChange>(b =>
+            {
+                b.HasKey(x => x.Id);
+
+                b.Property(x => x.OldIdentificationNumber).IsRequired();
+                b.Property(x => x.NewIdentificationNumber).IsRequired();
+                b.Property(x => x.ChangedAtUtc).IsRequired();
+
+                b.HasOne(x => x.Client)
+                    .WithMany(c => c.IdentifierChanges) 
+                    .HasForeignKey(x => x.ClientId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                b.HasIndex(x => x.ClientId);
+            });
     }
+}

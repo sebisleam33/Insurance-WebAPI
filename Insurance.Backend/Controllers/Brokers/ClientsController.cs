@@ -33,4 +33,11 @@ public class ClientsController : ControllerBase
         await _service.UpdateAsync(clientId, request, ct);
         return NoContent();
     }
+
+    [HttpPut("{clientId:guid}/identifier")]
+    public async Task<IActionResult> ChangeIdentifier(Guid clientId, [FromBody] ChangeClientIdentifierRequestDTO request, CancellationToken ct = default)
+    {
+        await _service.ChangeIdentifierAsync(clientId, request, ct);
+        return NoContent();
+    }
 }
