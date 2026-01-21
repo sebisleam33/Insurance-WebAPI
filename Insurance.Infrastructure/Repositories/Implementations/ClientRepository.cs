@@ -41,7 +41,11 @@ public sealed class ClientRepository : IClientRepository
 
         if (!string.IsNullOrWhiteSpace(name))
         {
-            query = query.Where(x => x.Name.Contains(name.Trim()));
+            var terms = name.Trim().ToLower()
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var t in terms)
+                query = query.Where(x => x.Name.ToLower().Contains(t));
         }
 
         if (!string.IsNullOrWhiteSpace(identifier))
