@@ -1,32 +1,32 @@
 Summary
-  Generated on: 1/16/2026 - 2:09:48 PM
+  Generated on: 1/21/2026 - 10:33:14 AM
   Parser: Cobertura
   Assemblies: 4
-  Classes: 27
-  Files: 26
-  Line coverage: 90.6%
-  Covered lines: 425
-  Uncovered lines: 44
-  Coverable lines: 469
-  Total lines: 905
-  Branch coverage: 94.1% (113 of 120)
-  Covered branches: 113
-  Total branches: 120
-  Method coverage: 98.3% (181 of 184)
-  Full method coverage: 94.5% (174 of 184)
-  Covered methods: 181
-  Fully covered methods: 174
-  Total methods: 184
+  Classes: 28
+  Files: 27
+  Line coverage: 96.8%
+  Covered lines: 515
+  Uncovered lines: 17
+  Coverable lines: 532
+  Total lines: 994
+  Branch coverage: 97.7% (131 of 134)
+  Covered branches: 131
+  Total branches: 134
+  Method coverage: 99.5% (204 of 205)
+  Full method coverage: 95.6% (196 of 205)
+  Covered methods: 204
+  Fully covered methods: 196
+  Total methods: 205
 
-Insurance.Api                                                                 95.7%
+Insurance.Api                                                                   96%
   Insurance.Api.Controllers.Brokers.BuildingsController                       81.8%
-  Insurance.Api.Controllers.Brokers.ClientsController                         72.7%
+  Insurance.Api.Controllers.Brokers.ClientsController                           80%
   Insurance.Api.Controllers.Brokers.GeographyController                        100%
   Insurance.Api.Mapping.ApiMappingProfile                                      100%
   Insurance.Api.Middleware.ExceptionHandlingMiddleware                         100%
   Insurance.Api.Middleware.ExceptionHandlingMiddleware.ErrorResponse           100%
 
-Insurance.Application                                                           94%
+Insurance.Application                                                         94.2%
   Insurance.Application.Common.Exceptions.AppException                         100%
   Insurance.Application.Common.Exceptions.BusinessRuleException                100%
   Insurance.Application.Common.Exceptions.ConflictException                    100%
@@ -37,18 +37,19 @@ Insurance.Application                                                           
   Insurance.Application.Common.PagedResult<T>                                  100%
   Insurance.Application.Common.Validation.ValidationHelpers                    100%
   Insurance.Application.Services.Implementations.BuildingService                93%
-  Insurance.Application.Services.Implementations.ClientService                90.1%
+  Insurance.Application.Services.Implementations.ClientService                91.9%
   Insurance.Application.Services.Implementations.GeographyService              100%
 
 Insurance.Domain                                                               100%
   Insurance.Domain.Entities.Building                                           100%
   Insurance.Domain.Entities.Client                                             100%
+  Insurance.Domain.Entities.ClientIdentifierChange                             100%
   Insurance.Domain.Entities.Geography.City                                     100%
   Insurance.Domain.Entities.Geography.Country                                  100%
   Insurance.Domain.Entities.Geography.County                                   100%
 
-Insurance.Infrastructure                                                      78.6%
+Insurance.Infrastructure                                                       100%
   Insurance.Infrastructure.Persistence.AppDbContext                            100%
-  Insurance.Infrastructure.Repositories.Implementations.BuildingRepository    68.7%
-  Insurance.Infrastructure.Repositories.Implementations.ClientRepository        40%
+  Insurance.Infrastructure.Repositories.Implementations.BuildingRepository     100%
+  Insurance.Infrastructure.Repositories.Implementations.ClientRepository       100%
   Insurance.Infrastructure.Repositories.Implementations.GeographyRepository    100%

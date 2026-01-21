@@ -8,11 +8,12 @@ using Insurance.Domain.Entities;
 using Insurance.Infrastructure.Repositories.Interfaces;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
+using NUnit.Framework;
 
 namespace Insurance.Tests.Unit.Services;
 
     [TestFixture]
-    public class ClientServiceTests
+    public sealed class ClientServiceTests
     {
         private static IMapper CreateMapper()
         {
@@ -20,8 +21,24 @@ namespace Insurance.Tests.Unit.Services;
             {
                 c.AddProfile(new ApiMappingProfile());
             }, NullLoggerFactory.Instance);
+
             cfg.AssertConfigurationIsValid();
             return cfg.CreateMapper();
+        }
+
+        private static ClientService CreateSut(
+            Mock<IClientRepository> clients,
+            Mock<IBuildingRepository>? buildings = null,
+            IMapper? mapper = null)
+        {
+            buildings ??= new Mock<IBuildingRepository>(MockBehavior.Loose);
+            mapper ??= CreateMapper();
+
+            return new ClientService(
+                clients.Object,
+                buildings.Object,
+                mapper,
+                NullLogger<ClientService>.Instance);
         }
 
         [Test]
@@ -42,14 +59,32 @@ namespace Insurance.Tests.Unit.Services;
         }
 
         [Test]
+        public void CreateAsync_InvalidEmail_ThrowsValidation()
+        {
+            var clients = new Mock<IClientRepository>(MockBehavior.Loose);
+            clients.Setup(x => x.ExistsByIdentifierAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                   .ReturnsAsync(false);
+
+            var svc = CreateSut(clients);
+
+            Func<Task> act = async () => await svc.CreateAsync(new CreateClientRequestDTO
+            {
+                Name = "John",
+                IdentificationNumber = "CNP1",
+                Email = "not-an-email"
+            });
+
+            act.Should().ThrowAsync<ValidationException>();
+        }
+
+        [Test]
         public async Task CreateAsync_DuplicateIdentifier_ThrowsConflict()
         {
             var clients = new Mock<IClientRepository>();
-            clients.Setup(x => x.ExistsByIdentifierAsync("CNP1", It.IsAny<CancellationToken>())).ReturnsAsync(true);
+            clients.Setup(x => x.ExistsByIdentifierAsync("CNP1", It.IsAny<CancellationToken>()))
+                   .ReturnsAsync(true);
 
-            var buildings = new Mock<IBuildingRepository>(MockBehavior.Loose);
-
-            var svc = new ClientService(clients.Object, buildings.Object, CreateMapper(), NullLogger<ClientService>.Instance);
+            var svc = CreateSut(clients);
 
             Func<Task> act = async () => await svc.CreateAsync(new CreateClientRequestDTO
             {
@@ -67,11 +102,10 @@ namespace Insurance.Tests.Unit.Services;
             clients.Setup(x => x.GetByIdAsync(It.IsAny<Guid>(), true, It.IsAny<CancellationToken>()))
                    .ReturnsAsync((Client?)null);
 
-            var buildings = new Mock<IBuildingRepository>(MockBehavior.Loose);
+            var svc = CreateSut(clients);
 
-            var svc = new ClientService(clients.Object, buildings.Object, CreateMapper(), NullLogger<ClientService>.Instance);
-
-            Func<Task> act = async () => await svc.UpdateAsync(Guid.NewGuid(), new UpdateClientRequestDTO { Name = "X" });
+            Func<Task> act = async () =>
+                await svc.UpdateAsync(Guid.NewGuid(), new UpdateClientRequestDTO { Name = "X" });
 
             await act.Should().ThrowAsync<NotFoundException>();
         }
@@ -83,35 +117,14 @@ namespace Insurance.Tests.Unit.Services;
             clients.Setup(x => x.SearchAsync(null, null, 1, 20, It.IsAny<CancellationToken>()))
                    .ReturnsAsync((new List<Client>(), 0));
 
-            var buildings = new Mock<IBuildingRepository>(MockBehavior.Loose);
-
-            var svc = new ClientService(clients.Object, buildings.Object, CreateMapper(), NullLogger<ClientService>.Instance);
+            var svc = CreateSut(clients);
 
             var result = await svc.SearchAsync(null, null, 1, 20);
 
             result.TotalCount.Should().Be(0);
             result.Items.Should().BeEmpty();
-        }
-
-        [Test]
-        public void CreateAsync_InvalidEmail_ThrowsValidation()
-        {
-            var clients = new Mock<IClientRepository>(MockBehavior.Loose);
-            clients.Setup(x => x.ExistsByIdentifierAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                   .ReturnsAsync(false);
-
-            var buildings = new Mock<IBuildingRepository>(MockBehavior.Loose);
-
-            var svc = new ClientService(clients.Object, buildings.Object, CreateMapper(), NullLogger<ClientService>.Instance);
-
-            Func<Task> act = async () => await svc.CreateAsync(new CreateClientRequestDTO
-            {
-                Name = "John",
-                IdentificationNumber = "CNP1",
-                Email = "not-an-email"
-            });
-
-            act.Should().ThrowAsync<ValidationException>();
+            result.Page.Should().Be(1);
+            result.PageSize.Should().Be(20);
         }
 
         [Test]
@@ -119,11 +132,9 @@ namespace Insurance.Tests.Unit.Services;
         {
             var clients = new Mock<IClientRepository>();
             clients.Setup(x => x.SearchAsync(null, null, 1, 20, It.IsAny<CancellationToken>()))
-                   .ReturnsAsync((new List<Insurance.Domain.Entities.Client>(), 0));
+                   .ReturnsAsync((new List<Client>(), 0));
 
-            var buildings = new Mock<IBuildingRepository>(MockBehavior.Loose);
-
-            var svc = new ClientService(clients.Object, buildings.Object, CreateMapper(), NullLogger<ClientService>.Instance);
+            var svc = CreateSut(clients);
 
             var result = await svc.SearchAsync(null, null, page: 0, pageSize: 999);
 
@@ -131,5 +142,33 @@ namespace Insurance.Tests.Unit.Services;
             result.PageSize.Should().Be(20);
 
             clients.Verify(x => x.SearchAsync(null, null, 1, 20, It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Test]
+        public async Task SearchAsync_ByName_PassesNameThrough()
+        {
+            var clients = new Mock<IClientRepository>();
+            clients.Setup(x => x.SearchAsync("Ion", null, 1, 20, It.IsAny<CancellationToken>()))
+                   .ReturnsAsync((new List<Client>(), 0));
+
+            var svc = CreateSut(clients);
+
+            await svc.SearchAsync(name: "Ion", identifier: null, page: 1, pageSize: 20);
+
+            clients.Verify(x => x.SearchAsync("Ion", null, 1, 20, It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Test]
+        public async Task SearchAsync_NameWithSpaces_ForwardsRawValue()
+        {
+            var clients = new Mock<IClientRepository>();
+            clients.Setup(x => x.SearchAsync("  Ion  ", null, 1, 20, It.IsAny<CancellationToken>()))
+                   .ReturnsAsync((new List<Client>(), 0));
+
+            var svc = CreateSut(clients);
+
+            await svc.SearchAsync(name: "  Ion  ", identifier: null, page: 1, pageSize: 20);
+
+            clients.Verify(x => x.SearchAsync("  Ion  ", null, 1, 20, It.IsAny<CancellationToken>()), Times.Once);
         }
     }

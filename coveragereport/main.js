@@ -214,9 +214,9 @@ var assemblies = [
     "name": "Insurance.Api",
     "classes": [
       { "name": "Insurance.Api.Controllers.Brokers.BuildingsController", "rp": "Insurance.Api_BuildingsController.html", "cl": 9, "ucl": 2, "cal": 11, "tl": 35, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Insurance.Api.Controllers.Brokers.ClientsController", "rp": "Insurance.Api_ClientsController.html", "cl": 8, "ucl": 3, "cal": 11, "tl": 36, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Api.Controllers.Brokers.ClientsController", "rp": "Insurance.Api_ClientsController.html", "cl": 12, "ucl": 3, "cal": 15, "tl": 43, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Api.Controllers.Brokers.GeographyController", "rp": "Insurance.Api_GeographyController.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Insurance.Api.Mapping.ApiMappingProfile", "rp": "Insurance.Api_ApiMappingProfile.html", "cl": 45, "ucl": 0, "cal": 45, "tl": 66, "cb": 64, "tb": 64, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Api.Mapping.ApiMappingProfile", "rp": "Insurance.Api_ApiMappingProfile.html", "cl": 47, "ucl": 0, "cal": 47, "tl": 66, "cb": 68, "tb": 68, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Api.Middleware.ExceptionHandlingMiddleware", "rp": "Insurance.Api_ExceptionHandlingMiddleware.html", "cl": 44, "ucl": 0, "cal": 44, "tl": 71, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Api.Middleware.ExceptionHandlingMiddleware.ErrorResponse", "rp": "Insurance.Api_ErrorResponse.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 71, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
@@ -233,14 +233,15 @@ var assemblies = [
       { "name": "Insurance.Application.Common.PagedResult<T>", "rp": "Insurance.Application_PagedResult_T_.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Application.Common.Validation.ValidationHelpers", "rp": "Insurance.Application_ValidationHelpers.html", "cl": 22, "ucl": 0, "cal": 22, "tl": 42, "cb": 12, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Application.Services.Implementations.BuildingService", "rp": "Insurance.Application_BuildingService.html", "cl": 67, "ucl": 5, "cal": 72, "tl": 117, "cb": 11, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Insurance.Application.Services.Implementations.ClientService", "rp": "Insurance.Application_ClientService.html", "cl": 55, "ucl": 6, "cal": 61, "tl": 100, "cb": 13, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Application.Services.Implementations.ClientService", "rp": "Insurance.Application_ClientService.html", "cl": 80, "ucl": 7, "cal": 87, "tl": 138, "cb": 18, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Application.Services.Implementations.GeographyService", "rp": "Insurance.Application_GeographyService.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 27, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
   {
     "name": "Insurance.Domain",
     "classes": [
       { "name": "Insurance.Domain.Entities.Building", "rp": "Insurance.Domain_Building.html", "cl": 14, "ucl": 0, "cal": 14, "tl": 29, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Insurance.Domain.Entities.Client", "rp": "Insurance.Domain_Client.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 17, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Domain.Entities.Client", "rp": "Insurance.Domain_Client.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 18, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Domain.Entities.ClientIdentifierChange", "rp": "Insurance.Domain_ClientIdentifierChange.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Domain.Entities.Geography.City", "rp": "Insurance.Domain_City.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Domain.Entities.Geography.Country", "rp": "Insurance.Domain_Country.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 8, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Domain.Entities.Geography.County", "rp": "Insurance.Domain_County.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -248,9 +249,9 @@ var assemblies = [
   {
     "name": "Insurance.Infrastructure",
     "classes": [
-      { "name": "Insurance.Infrastructure.Persistence.AppDbContext", "rp": "Insurance.Infrastructure_AppDbContext.html", "cl": 58, "ucl": 0, "cal": 58, "tl": 74, "cb": 10, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Insurance.Infrastructure.Repositories.Implementations.BuildingRepository", "rp": "Insurance.Infrastructure_BuildingRepository.html", "cl": 22, "ucl": 10, "cal": 32, "tl": 61, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Insurance.Infrastructure.Repositories.Implementations.ClientRepository", "rp": "Insurance.Infrastructure_ClientRepository.html", "cl": 12, "ucl": 18, "cal": 30, "tl": 59, "cb": 2, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Infrastructure.Persistence.AppDbContext", "rp": "Insurance.Infrastructure_AppDbContext.html", "cl": 74, "ucl": 0, "cal": 74, "tl": 92, "cb": 12, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Infrastructure.Repositories.Implementations.BuildingRepository", "rp": "Insurance.Infrastructure_BuildingRepository.html", "cl": 32, "ucl": 0, "cal": 32, "tl": 61, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Infrastructure.Repositories.Implementations.ClientRepository", "rp": "Insurance.Infrastructure_ClientRepository.html", "cl": 37, "ucl": 0, "cal": 37, "tl": 69, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Infrastructure.Repositories.Implementations.GeographyRepository", "rp": "Insurance.Infrastructure_GeographyRepository.html", "cl": 11, "ucl": 0, "cal": 11, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
@@ -268,8 +269,8 @@ var riskHotspots = [
   {
     "assembly": "Insurance.Api", "class": "Insurance.Api.Mapping.ApiMappingProfile", "reportPath": "Insurance.Api_ApiMappingProfile.html", "methodName": ".ctor()", "methodShortName": ".ctor()", "fileIndex": 0, "line": 12,
     "metrics": [
-      { "value": 64, "exceeded": true },
-      { "value": 64, "exceeded": true },
+      { "value": 68, "exceeded": true },
+      { "value": 68, "exceeded": true },
     ]},
 ];
 
