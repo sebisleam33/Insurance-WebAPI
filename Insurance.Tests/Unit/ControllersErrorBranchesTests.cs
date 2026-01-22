@@ -53,7 +53,7 @@ public sealed class ControllersErrorBranchesTests
     {
         var resp = await _client.PostAsJsonAsync("/api/brokers/clients", new CreateClientRequestDTO
         {
-            Name = "", // invalid
+            Name = "",
             IdentificationNumber = ""
         });
 

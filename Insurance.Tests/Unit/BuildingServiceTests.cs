@@ -4,6 +4,7 @@ using Insurance.Api.Mapping;
 using Insurance.Application.Common.DTOs.BuildingDTOs;
 using Insurance.Application.Common.Exceptions;
 using Insurance.Application.Services.Implementations;
+using Insurance.Domain.Entities;
 using Insurance.Infrastructure.Repositories.Interfaces;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
@@ -95,7 +96,7 @@ namespace Insurance.Tests.Unit;
            .ReturnsAsync(true);
 
         var buildings = new Mock<IBuildingRepository>();
-        buildings.Setup(x => x.AddAsync(It.IsAny<Insurance.Domain.Entities.Building>(), It.IsAny<CancellationToken>()))
+        buildings.Setup(x => x.AddAsync(It.IsAny<Building>(), It.IsAny<CancellationToken>()))
                  .Returns(Task.CompletedTask);
         buildings.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
                  .Returns(Task.CompletedTask);
@@ -105,7 +106,7 @@ namespace Insurance.Tests.Unit;
         var id = await svc.CreateAsync(clientId, ValidCreate());
 
         id.Should().NotBeEmpty();
-        buildings.Verify(x => x.AddAsync(It.Is<Insurance.Domain.Entities.Building>(b => b.ClientId == clientId), It.IsAny<CancellationToken>()), Times.Once);
+        buildings.Verify(x => x.AddAsync(It.Is<Building>(b => b.ClientId == clientId), It.IsAny<CancellationToken>()), Times.Once);
         buildings.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -137,7 +138,7 @@ namespace Insurance.Tests.Unit;
 
         var buildings = new Mock<IBuildingRepository>();
         buildings.Setup(x => x.GetByIdAsync(It.IsAny<Guid>(), true, It.IsAny<CancellationToken>()))
-                 .ReturnsAsync((Insurance.Domain.Entities.Building?)null);
+                 .ReturnsAsync((Building?)null);
 
         var svc = new BuildingService(
             new Mock<IClientRepository>(MockBehavior.Loose).Object,
@@ -156,7 +157,7 @@ namespace Insurance.Tests.Unit;
     {
         var buildings = new Mock<IBuildingRepository>();
         buildings.Setup(x => x.GetByIdWithGeographyAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-                 .ReturnsAsync((Insurance.Domain.Entities.Building?)null);
+                 .ReturnsAsync((Building?)null);
 
         var svc = new BuildingService(
             new Mock<IClientRepository>(MockBehavior.Loose).Object,
@@ -186,7 +187,6 @@ namespace Insurance.Tests.Unit;
             CreateMapper(),
             NullLogger<BuildingService>.Instance);
 
-        // page<=0 => clamp; pageSize>200 => clamp (exercise those lines)
         Func<Task> act = async () => await svc.GetByClientAsync(clientId, page: 0, pageSize: 999);
 
         await act.Should().ThrowAsync<NotFoundException>().WithMessage("Client not found.");
@@ -204,7 +204,7 @@ namespace Insurance.Tests.Unit;
 
         var buildings = new Mock<IBuildingRepository>();
         buildings.Setup(x => x.GetByClientAsync(clientId, 1, 20, It.IsAny<CancellationToken>()))
-                 .ReturnsAsync((new List<Insurance.Domain.Entities.Building>(), 0));
+                 .ReturnsAsync((new List<Building>(), 0));
 
         var svc = new BuildingService(
             clients.Object,
@@ -355,7 +355,7 @@ namespace Insurance.Tests.Unit;
                .ReturnsAsync(true);
 
             var buildings = new Mock<IBuildingRepository>();
-            buildings.Setup(x => x.AddAsync(It.IsAny<Insurance.Domain.Entities.Building>(), It.IsAny<CancellationToken>()))
+            buildings.Setup(x => x.AddAsync(It.IsAny<Building>(), It.IsAny<CancellationToken>()))
                      .Returns(Task.CompletedTask);
             buildings.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
                      .Returns(Task.CompletedTask);
@@ -378,7 +378,7 @@ namespace Insurance.Tests.Unit;
             });
 
             id.Should().NotBeEmpty();
-            buildings.Verify(x => x.AddAsync(It.IsAny<Insurance.Domain.Entities.Building>(), It.IsAny<CancellationToken>()), Times.Once);
+            buildings.Verify(x => x.AddAsync(It.IsAny<Building>(), It.IsAny<CancellationToken>()), Times.Once);
             buildings.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
 
@@ -387,7 +387,7 @@ namespace Insurance.Tests.Unit;
         {
             var buildings = new Mock<IBuildingRepository>();
             buildings.Setup(x => x.GetByIdAsync(It.IsAny<Guid>(), true, It.IsAny<CancellationToken>()))
-                     .ReturnsAsync((Insurance.Domain.Entities.Building?)null);
+                     .ReturnsAsync((Building?)null);
 
             var clients = new Mock<IClientRepository>(MockBehavior.Loose);
 
@@ -450,7 +450,7 @@ namespace Insurance.Tests.Unit;
         {
             var buildings = new Mock<IBuildingRepository>();
             buildings.Setup(x => x.GetByIdWithGeographyAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-                     .ReturnsAsync((Insurance.Domain.Entities.Building?)null);
+                     .ReturnsAsync((Building?)null);
 
             var svc = new BuildingService(
                 new Mock<IClientRepository>(MockBehavior.Loose).Object,
@@ -524,7 +524,7 @@ namespace Insurance.Tests.Unit;
 
             var buildings = new Mock<IBuildingRepository>();
             buildings.Setup(x => x.GetByClientAsync(clientId, 1, 20, It.IsAny<CancellationToken>()))
-                     .ReturnsAsync((new List<Insurance.Domain.Entities.Building>(), 0));
+                     .ReturnsAsync((new List<Building>(), 0));
 
             var geo = new Mock<IGeographyRepository>(MockBehavior.Loose);
 

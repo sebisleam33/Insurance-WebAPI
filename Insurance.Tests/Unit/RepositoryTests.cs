@@ -34,8 +34,7 @@ namespace Insurance.Tests.Infrastructure.Repositories;
             _connection.Dispose();
         }
 
-        private AppDbContext NewDb()
-            => new AppDbContext(_dbOptions);
+        private AppDbContext NewDb() => new AppDbContext(_dbOptions);
 
         private static (Country c, County co, City ci) SeedGeography(AppDbContext db)
         {

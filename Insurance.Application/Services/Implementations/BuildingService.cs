@@ -36,10 +36,14 @@ public sealed class BuildingService : IBuildingService
         Validate(request);
 
         if (!await _clients.ExistsByIdAsync(clientId, ct))
-            throw new NotFoundException("Client not found.");
+        { 
+            throw new NotFoundException("Client not found."); 
+        }
 
         if (!await _geo.CityExistsAsync(request.CityId, ct))
-            throw new ValidationException("City does not exist.");
+        { 
+            throw new ValidationException("City does not exist."); 
+        }
 
         var entity = _mapper.Map<Insurance.Domain.Entities.Building>(request);
         entity.Id = Guid.NewGuid();
@@ -57,11 +61,15 @@ public sealed class BuildingService : IBuildingService
         Validate(request);
 
         if (!await _geo.CityExistsAsync(request.CityId, ct))
-            throw new ValidationException("City does not exist.");
+        { 
+            throw new ValidationException("City does not exist."); 
+        }
 
         var entity = await _buildings.GetByIdAsync(buildingId, trackChanges: true, ct);
         if (entity is null)
-            throw new NotFoundException("Building not found.");
+        { 
+            throw new NotFoundException("Building not found."); 
+        }
 
         _mapper.Map(request, entity);
 
@@ -73,7 +81,9 @@ public sealed class BuildingService : IBuildingService
     {
         var building = await _buildings.GetByIdWithGeographyAsync(buildingId, ct);
         if (building is null)
-            throw new NotFoundException("Building not found.");
+        {
+            throw new NotFoundException("Building not found."); 
+        }
 
         return _mapper.Map<BuildingDetailsResponseDTO>(building);
     }
@@ -84,7 +94,9 @@ public sealed class BuildingService : IBuildingService
         pageSize = pageSize is < 1 or > 200 ? 20 : pageSize;
 
         if (!await _clients.ExistsByIdAsync(clientId, ct))
-            throw new NotFoundException("Client not found.");
+        { 
+            throw new NotFoundException("Client not found."); 
+        }
 
         var (items, total) = await _buildings.GetByClientAsync(clientId, page, pageSize, ct);
 

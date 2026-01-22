@@ -33,7 +33,9 @@ public sealed class ClientService : IClientService
 
         var exists = await _clients.ExistsByIdentifierAsync(request.IdentificationNumber.Trim(), ct);
         if (exists)
-            throw new ConflictException("A client with the same identification number already exists.");
+        { 
+            throw new ConflictException("A client with the same identification number already exists."); 
+        }
 
         var entity = _mapper.Map<Insurance.Domain.Entities.Client>(request);
         entity.Id = Guid.NewGuid();
@@ -52,7 +54,9 @@ public sealed class ClientService : IClientService
 
         var entity = await _clients.GetByIdAsync(clientId, trackChanges: true, ct);
         if (entity is null)
-            throw new NotFoundException("Client not found.");
+        {
+            throw new NotFoundException("Client not found."); 
+        }
 
         _mapper.Map(request, entity); 
 
@@ -64,7 +68,9 @@ public sealed class ClientService : IClientService
     {
         var client = await _clients.GetByIdAsync(clientId, trackChanges: false, ct);
         if (client is null)
-            throw new NotFoundException("Client not found.");
+        { 
+            throw new NotFoundException("Client not found."); 
+        }
 
         var buildings = await _buildings.GetAllByClientAsync(clientId, ct);
 
@@ -104,16 +110,22 @@ public sealed class ClientService : IClientService
 
         var client = await _clients.GetByIdAsync(clientId, trackChanges: true, ct);
         if (client is null)
+        { 
             throw new NotFoundException("Client not found.");
+        }
 
         var newId = request.NewIdentificationNumber.Trim();
 
         if (string.Equals(client.IdentificationNumber, newId, StringComparison.OrdinalIgnoreCase))
+        {
             throw new BusinessRuleException("New identification number must be different from the current one.");
+        }
 
         var exists = await _clients.ExistsByIdentifierAsync(newId, ct);
         if (exists)
-            throw new ConflictException("A client with the same identification number already exists.");
+        {
+            throw new ConflictException("A client with the same identification number already exists."); 
+        }
 
         var change = new ClientIdentifierChange
         {
@@ -131,8 +143,7 @@ public sealed class ClientService : IClientService
 
         await _clients.SaveChangesAsync(ct);
 
-        _logger.LogInformation("Client identifier changed: {ClientId} {Old} -> {New}",
-            clientId, change.OldIdentificationNumber, change.NewIdentificationNumber);
+        _logger.LogInformation("Client identifier changed: {ClientId} {Old} -> {New}", clientId, change.OldIdentificationNumber, change.NewIdentificationNumber);
     }
 
 }

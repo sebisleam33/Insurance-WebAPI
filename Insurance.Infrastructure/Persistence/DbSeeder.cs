@@ -7,7 +7,10 @@ namespace Insurance.Infrastructure.Persistence;
     {
         public static async Task SeedAsync(AppDbContext db, CancellationToken ct = default)
         {
-            if (await db.Countries.AnyAsync(ct)) return;
+            if (await db.Countries.AnyAsync(ct)) 
+            { 
+                return; 
+            }
 
             var romania = new Country { Name = "Romania" };
 
