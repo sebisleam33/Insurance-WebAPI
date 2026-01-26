@@ -1,5 +1,4 @@
 stages:
-  - restore
   - build
   - test
 
@@ -9,22 +8,20 @@ variables:
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
-
-restore:
-  stage: restore
-  script:
-    - dotnet --info
-    - dotnet restore
+  paths:
+    - .nuget/packages/
 
 build:
   stage: build
   script:
+    - dotnet --info
+    - dotnet restore
     - dotnet build -c Release --no-restore
 
 test:
   stage: test
   script:
-    - dotnet test -c Release --no-build --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test-results.trx"
+    - dotnet test -c Release --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test-results.trx"
     - dotnet tool install --tool-path . dotnet-reportgenerator-globaltool
     - ./reportgenerator "-reports:**/TestResults/**/coverage.cobertura.xml" "-targetdir:CoverageReport" "-reporttypes:Html;Cobertura"
   artifacts:
