@@ -37,7 +37,7 @@ public sealed class ClientService : IClientService
             throw new ConflictException("A client with the same identification number already exists."); 
         }
 
-        var entity = _mapper.Map<Insurance.Domain.Entities.Client>(request);
+        var entity = _mapper.Map<Client>(request);
         entity.Id = Guid.NewGuid();
 
         await _clients.AddAsync(entity, ct);
