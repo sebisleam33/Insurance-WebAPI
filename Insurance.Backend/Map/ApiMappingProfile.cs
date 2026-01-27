@@ -62,5 +62,23 @@ public sealed class ApiMappingProfile : Profile
             .ForMember(d => d.CountyName, opt => opt.MapFrom(s => s.City.County.Name))
             .ForMember(d => d.CountryId, opt => opt.MapFrom(s => s.City.County.CountryId))
             .ForMember(d => d.CountryName, opt => opt.MapFrom(s => s.City.County.Country.Name));
+
+            //CreateMap<Policy, PolicyListItemResponseDTO>()
+            //    .ForMember(d => d.ClientName, opt => opt.MapFrom(s => s.Client.Name))
+            //    .ForMember(d => d.BrokerName, opt => opt.MapFrom(s => s.Broker.Name))
+            //    .ForMember(d => d.CurrencyCode, opt => opt.MapFrom(s => s.Currency.Code));
+
+            //CreateMap<Policy, PolicyDetailsResponseDTO>()
+            //    .ForMember(d => d.ClientName, opt => opt.MapFrom(s => s.Client.Name))
+            //    .ForMember(d => d.BrokerName, opt => opt.MapFrom(s => s.Broker.Name))
+            //    .ForMember(d => d.BuildingStreet, opt => opt.MapFrom(s => s.Building.Street))
+            //    .ForMember(d => d.BuildingNumber, opt => opt.MapFrom(s => s.Building.Number))
+            //    .ForMember(d => d.CityId, opt => opt.MapFrom(s => s.Building.CityId))
+            //    .ForMember(d => d.CityName, opt => opt.MapFrom(s => s.Building.City.Name))
+            //    .ForMember(d => d.CountyId, opt => opt.MapFrom(s => s.Building.City.CountyId))
+            //    .ForMember(d => d.CountyName, opt => opt.MapFrom(s => s.Building.City.County.Name))
+            //    .ForMember(d => d.CountryId, opt => opt.MapFrom(s => s.Building.City.County.CountryId))
+            //    .ForMember(d => d.CountryName, opt => opt.MapFrom(s => s.Building.City.County.Country.Name))
+            //    .ForMember(d => d.CurrencyCode, opt => opt.MapFrom(s => s.Currency.Code));
+        }
     }
-}

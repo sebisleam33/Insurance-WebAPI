@@ -7,24 +7,29 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Insurance.Infrastructure;
 
-    public static class DependencyInjection
+public static class DependencyInjection
+{
+    public static IServiceCollection AddInfrastructure(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
-        public static IServiceCollection AddInfrastructure(
-            this IServiceCollection services,
-            IConfiguration configuration)
+        services.AddDbContext<AppDbContext>(options =>
         {
-            services.AddDbContext<AppDbContext>(options =>
-            {
-                var cs = configuration.GetConnectionString("DefaultConnection")
-                         ?? "Data Source=insurance.db";
+            var cs = configuration.GetConnectionString("DefaultConnection")
+                     ?? "Data Source=insurance.db";
 
-                options.UseSqlite(cs);
-            });
+            options.UseSqlite(cs);
+        });
 
-            services.AddScoped<IClientRepository, ClientRepository>();
-            services.AddScoped<IBuildingRepository, BuildingRepository>();
-            services.AddScoped<IGeographyRepository, GeographyRepository>();
+        services.AddScoped<IClientRepository, ClientRepository>();
+        services.AddScoped<IBuildingRepository, BuildingRepository>();
+        services.AddScoped<IGeographyRepository, GeographyRepository>();
+        services.AddScoped<IPolicyRepository, PolicyRepository>();
+        services.AddScoped<IBrokerRepository, BrokerRepository>();
+        services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+        services.AddScoped<IFeeConfigurationRepository, FeeConfigurationRepository>();
+        services.AddScoped<IRiskFactorConfigurationRepository, RiskFactorConfigurationRepository>();
 
-            return services;
-        }
+        return services;
     }
+}
