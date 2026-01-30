@@ -1,4 +1,4 @@
-﻿namespace Insurance.Application.Common.DTOs.AdminDTOs;
+﻿namespace Insurance.Application.Common.DTOs.AdminDTOs.CurrencyDTOs;
 
     public sealed class CurrencyResponseDTO
     {

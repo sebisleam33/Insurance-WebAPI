@@ -1,13 +1,14 @@
 ﻿namespace Insurance.Application.Common.DTOs.PolicyDTOs;
 
-    public sealed class CreatePolicyRequestDTO
+public sealed class CreatePolicyRequestDTO
     {
-        public Guid ClientId { get; init; }
-        public Guid BuildingId { get; init; }
-        public Guid BrokerId { get; init; }
-        public int CurrencyId { get; init; }
+        public Guid ClientId { get; set; }
+        public Guid BuildingId { get; set; }
+        public Guid BrokerId { get; set; }
+        public int CurrencyId { get; set; }
 
-        public decimal BasePremium { get; init; }
-        public DateTime StartDateUtc { get; init; }
-        public DateTime EndDateUtc { get; init; }
+        public decimal BasePremium { get; set; }
+
+        public DateTime StartDateUtc { get; set; }
+        public DateTime EndDateUtc { get; set; }
     }

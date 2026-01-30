@@ -24,11 +24,11 @@ public static class DependencyInjection
         services.AddScoped<IClientRepository, ClientRepository>();
         services.AddScoped<IBuildingRepository, BuildingRepository>();
         services.AddScoped<IGeographyRepository, GeographyRepository>();
-        services.AddScoped<IPolicyRepository, PolicyRepository>();
-        services.AddScoped<IBrokerRepository, BrokerRepository>();
         services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+        services.AddScoped<IPolicyRepository, PolicyRepository>();
         services.AddScoped<IFeeConfigurationRepository, FeeConfigurationRepository>();
         services.AddScoped<IRiskFactorConfigurationRepository, RiskFactorConfigurationRepository>();
+        services.AddScoped<IBrokerRepository, BrokerRepository>();
 
         return services;
     }

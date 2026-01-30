@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Insurance.Infrastructure.Repositories.Implementations;
 
-    public sealed class PolicyRepository : IPolicyRepository
+public sealed class PolicyRepository : IPolicyRepository
     {
         private readonly AppDbContext _db;
         public PolicyRepository(AppDbContext db) => _db = db;
@@ -17,15 +17,16 @@ namespace Insurance.Infrastructure.Repositories.Implementations;
             return Task.CompletedTask;
         }
 
-        public async Task<Policy?> GetByIdAsync(Guid id, bool trackChanges, CancellationToken ct = default)
+        public async Task<Policy?> GetByIdAsync(Guid policyId, bool trackChanges, CancellationToken ct = default)
         {
             var q = trackChanges ? _db.Policies : _db.Policies.AsNoTracking();
-            return await q.FirstOrDefaultAsync(x => x.Id == id, ct);
+            return await q.FirstOrDefaultAsync(x => x.Id == policyId, ct);
         }
 
-        public async Task<Policy?> GetByIdWithDetailsAsync(Guid id, CancellationToken ct = default)
+        public async Task<Policy?> GetByIdWithDetailsAsync(Guid policyId, CancellationToken ct = default)
         {
-            return await _db.Policies.AsNoTracking()
+            return await _db.Policies
+                .AsNoTracking()
                 .Include(p => p.Client)
                 .Include(p => p.Broker)
                 .Include(p => p.Currency)
@@ -33,7 +34,7 @@ namespace Insurance.Infrastructure.Repositories.Implementations;
                     .ThenInclude(b => b.City)
                         .ThenInclude(c => c.County)
                             .ThenInclude(co => co.Country)
-                .FirstOrDefaultAsync(x => x.Id == id, ct);
+                .FirstOrDefaultAsync(p => p.Id == policyId, ct);
         }
 
         public async Task<(IReadOnlyList<Policy> Items, int TotalCount)> SearchAsync(
@@ -46,7 +47,8 @@ namespace Insurance.Infrastructure.Repositories.Implementations;
             int pageSize,
             CancellationToken ct = default)
         {
-            IQueryable<Policy> q = _db.Policies.AsNoTracking()
+            IQueryable<Policy> q = _db.Policies
+                .AsNoTracking()
                 .Include(p => p.Client)
                 .Include(p => p.Broker)
                 .Include(p => p.Currency);
@@ -55,8 +57,8 @@ namespace Insurance.Infrastructure.Repositories.Implementations;
             if (brokerId.HasValue) q = q.Where(x => x.BrokerId == brokerId.Value);
             if (status.HasValue) q = q.Where(x => x.Status == status.Value);
 
-            if (startDateUtc.HasValue) q = q.Where(x => x.StartDateUtc >= startDateUtc.Value);
-            if (endDateUtc.HasValue) q = q.Where(x => x.EndDateUtc <= endDateUtc.Value);
+            if (startDateUtc.HasValue) q = q.Where(x => x.EndDateUtc >= startDateUtc.Value);
+            if (endDateUtc.HasValue) q = q.Where(x => x.StartDateUtc <= endDateUtc.Value);
 
             var total = await q.CountAsync(ct);
 

@@ -2,6 +2,7 @@
 using Insurance.Application.Common;
 using Insurance.Application.Common.DTOs.PolicyDTOs;
 using Insurance.Application.Common.Exceptions;
+using Insurance.Application.Common.Validation;
 using Insurance.Application.Services.Interfaces;
 using Insurance.Domain.Entities;
 using Insurance.Domain.Enums;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Insurance.Application.Services.Implementations;
 
-    public sealed class PolicyService : IPolicyService
+public sealed class PolicyService : IPolicyService
     {
         private readonly IClientRepository _clients;
         private readonly IBuildingRepository _buildings;
@@ -43,46 +44,44 @@ namespace Insurance.Application.Services.Implementations;
 
         public async Task<Guid> CreateDraftAsync(CreatePolicyRequestDTO request, CancellationToken ct = default)
         {
-        if (request.BasePremium <= 0)
-            {
-                throw new ValidationException("Base premium must be positive.");
-            }
+            if (request.ClientId == Guid.Empty)
+                throw new ValidationException("ClientId is required.");
 
+            if (request.BuildingId == Guid.Empty)
+                throw new ValidationException("BuildingId is required.");
+
+            if (request.BrokerId == Guid.Empty)
+                throw new ValidationException("BrokerId is required.");
+
+            if (request.BasePremium <= 0)
+                throw new ValidationException("Base premium must be positive.");
+
+            if (request.BasePremium <= 0)
+                throw new ValidationException("Base premium must be positive.");
+            
             if (request.EndDateUtc <= request.StartDateUtc)
-            {
                 throw new ValidationException("EndDateUtc must be after StartDateUtc.");
-            }
 
             if (!await _clients.ExistsByIdAsync(request.ClientId, ct))
-            { 
-                throw new NotFoundException("Client not found."); 
-            }
+                throw new NotFoundException("Client not found.");
 
             var building = await _buildings.GetByIdWithGeographyAsync(request.BuildingId, ct);
             if (building is null || building.ClientId != request.ClientId)
-            { 
-                throw new ValidationException("Building not found for client."); 
-            }
+                throw new ValidationException("Building not found for client.");
 
-                var broker = await _brokers.GetByIdAsync(request.BrokerId, trackChanges: false, ct);
+            var broker = await _brokers.GetByIdAsync(request.BrokerId, trackChanges: false, ct);
             if (broker is null)
-            { 
                 throw new NotFoundException("Broker not found.");
-            }
-            if (broker.Status != BrokerStatus.Active)
-            {
-                throw new ValidationException("Broker is inactive and cannot create policies."); 
-            }
 
-                var currency = await _currencies.GetByIdAsync(request.CurrencyId, trackChanges: false, ct);
+            if (broker.Status != BrokerStatus.Active)
+                throw new ForbiddenException("Broker is inactive and cannot create policies.");
+
+            var currency = await _currencies.GetByIdAsync(request.CurrencyId, trackChanges: false, ct);
             if (currency is null)
-            { 
                 throw new NotFoundException("Currency not found.");
-            }
+
             if (!currency.IsActive)
-            {
-                throw new ValidationException("Currency is inactive.");
-            }
+                throw new BusinessRuleException("Currency is inactive and cannot be used for new policies.");
 
             var finalPremium = await _calculator.CalculateFinalPremiumAsync(
                 request.BasePremium,
@@ -120,19 +119,13 @@ namespace Insurance.Application.Services.Implementations;
         {
             var policy = await _policies.GetByIdAsync(policyId, trackChanges: true, ct);
             if (policy is null)
-            { 
-                throw new NotFoundException("Policy not found."); 
-            }
+                throw new NotFoundException("Policy not found.");
 
             if (policy.Status != PolicyStatus.Draft)
-            { 
-                throw new ValidationException("Only Draft policies can be activated."); 
-            }
+                throw new BusinessRuleException("Only Draft policies can be activated.");
 
             if (policy.StartDateUtc.Date < DateTime.UtcNow.Date)
-            { 
-                throw new ValidationException("Start date cannot be in the past.");
-            }
+                throw new BusinessRuleException("Start date cannot be in the past.");
 
             policy.Status = PolicyStatus.Active;
             policy.UpdatedAtUtc = DateTime.UtcNow;
@@ -143,21 +136,17 @@ namespace Insurance.Application.Services.Implementations;
 
         public async Task CancelAsync(Guid policyId, CancelPolicyRequestDTO request, CancellationToken ct = default)
         {
-            if (string.IsNullOrWhiteSpace(request.Reason))
-            {
-                throw new ValidationException("Cancellation reason is required."); 
-            }
+            ValidationHelpers.RequireNotEmpty(request.Reason, nameof(request.Reason));
+
+            if (request.CancelledAtUtc == default)
+                throw new ValidationException("CancelledAtUtc is required.");
 
             var policy = await _policies.GetByIdAsync(policyId, trackChanges: true, ct);
             if (policy is null)
-            { 
                 throw new NotFoundException("Policy not found.");
-            }
 
             if (policy.Status != PolicyStatus.Active)
-            { 
-                throw new ValidationException("Only Active policies can be cancelled.");
-            }
+                throw new BusinessRuleException("Only Active policies can be cancelled.");
 
             policy.Status = PolicyStatus.Cancelled;
             policy.CancelledAtUtc = request.CancelledAtUtc;
@@ -172,9 +161,7 @@ namespace Insurance.Application.Services.Implementations;
         {
             var policy = await _policies.GetByIdWithDetailsAsync(policyId, ct);
             if (policy is null)
-            {
-                throw new NotFoundException("Policy not found."); 
-            }
+                throw new NotFoundException("Policy not found.");
 
             return _mapper.Map<PolicyDetailsResponseDTO>(policy);
         }
@@ -192,10 +179,7 @@ namespace Insurance.Application.Services.Implementations;
             page = page <= 0 ? 1 : page;
             pageSize = pageSize is < 1 or > 200 ? 20 : pageSize;
 
-            var (items, total) = await _policies.SearchAsync(
-                clientId, brokerId, status,
-                startDateUtc, endDateUtc,
-                page, pageSize, ct);
+            var (items, total) = await _policies.SearchAsync(clientId, brokerId, status, startDateUtc, endDateUtc, page, pageSize, ct);
 
             return new PagedResult<PolicyListItemResponseDTO>
             {

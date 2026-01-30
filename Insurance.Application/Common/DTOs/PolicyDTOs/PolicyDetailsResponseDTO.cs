@@ -2,41 +2,41 @@
 
 namespace Insurance.Application.Common.DTOs.PolicyDTOs;
 
-    public sealed class PolicyDetailsResponseDTO
+public sealed class PolicyDetailsResponseDTO
     {
-        public Guid Id { get; init; }
-        public string PolicyNumber { get; init; } = null!;
-        public PolicyStatus Status { get; init; }
+        public Guid Id { get; set; }
+        public string PolicyNumber { get; set; } = null!;
+        public PolicyStatus Status { get; set; }
 
-        public Guid ClientId { get; init; }
-        public string ClientName { get; init; } = null!;
+        public Guid ClientId { get; set; }
+        public string ClientName { get; set; } = null!;
 
-        public Guid BrokerId { get; init; }
-        public string BrokerName { get; init;} = null!;
+        public Guid BuildingId { get; set; }
+        public string BuildingStreet { get; set; } = null!;
+        public string BuildingNumber { get; set; } = null!;
 
-        public Guid BuildingId { get; init; }
-        public string BuildingStreet { get; init; } = null!;
-        public string BuildingNumber { get; init; } = null!;
+        public Guid CityId { get; set; }
+        public string CityName { get; set; } = null!;
+        public Guid CountyId { get; set; }
+        public string CountyName { get; set; } = null!;
+        public Guid CountryId { get; set; }
+        public string CountryName { get; set; } = null!;
 
-        public int CityId { get; init; }
-        public string CityName { get; init; } = null!;
-        public int CountyId { get; init; }
-        public string CountyName { get; init; } = null!;
-        public int CountryId { get; init; }
-        public string CountryName { get; init; } = null!;
+        public Guid BrokerId { get; set; }
+        public string BrokerName { get; set; } = null!;
 
-        public int CurrencyId { get; init; }
-        public string CurrencyCode { get; init; } = null!;
+        public int CurrencyId { get; set; }
+        public string CurrencyCode { get; set; } = null!;
 
-        public decimal BasePremium { get; init; }
-        public decimal FinalPremium { get; init; }
+        public decimal BasePremium { get; set; }
+        public decimal FinalPremium { get; set; }
 
-        public DateTime StartDateUtc { get; init; }
-        public DateTime EndDateUtc { get; init; }
+        public DateTime StartDateUtc { get; set; }
+        public DateTime EndDateUtc { get; set; }
 
-        public DateTime CreatedAtUtc { get; init; }
-        public DateTime UpdatedAtUtc { get; init; }
+        public DateTime CreatedAtUtc { get; set; }
+        public DateTime UpdatedAtUtc { get; set; }
 
-        public DateTime? CancelledAtUtc { get; init; }
-        public string? CancellationReason { get; init; }
+        public DateTime? CancelledAtUtc { get; set; }
+        public string? CancellationReason { get; set; }
     }

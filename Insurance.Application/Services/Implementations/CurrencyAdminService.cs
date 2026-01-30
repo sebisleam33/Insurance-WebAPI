@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using Insurance.Application.Common.DTOs.AdminDTOs;
+using Insurance.Application.Common.DTOs.AdminDTOs.CurrencyDTOs;
 using Insurance.Application.Common.Exceptions;
+using Insurance.Application.Common.Validation;
 using Insurance.Application.Services.Interfaces;
 using Insurance.Domain.Entities.Metadata;
 using Insurance.Infrastructure.Repositories.Interfaces;
@@ -8,100 +9,86 @@ using Microsoft.Extensions.Logging;
 
 namespace Insurance.Application.Services.Implementations;
 
-    public sealed class CurrencyAdminService : ICurrencyAdminService
+public sealed class CurrencyAdminService : ICurrencyAdminService
     {
-        private readonly ICurrencyRepository _repo;
+        private readonly ICurrencyRepository _currencies;
         private readonly IMapper _mapper;
         private readonly ILogger<CurrencyAdminService> _logger;
 
-        public CurrencyAdminService(ICurrencyRepository repo, IMapper mapper, ILogger<CurrencyAdminService> logger)
+        public CurrencyAdminService(ICurrencyRepository currencies, IMapper mapper, ILogger<CurrencyAdminService> logger)
         {
-            _repo = repo;
+            _currencies = currencies;
             _mapper = mapper;
             _logger = logger;
         }
 
         public async Task<IReadOnlyList<CurrencyResponseDTO>> GetAllAsync(CancellationToken ct = default)
-            => (await _repo.GetAllAsync(ct)).Select(_mapper.Map<CurrencyResponseDTO>).ToList();
-
-        public async Task<int> CreateAsync(CurrencyRequestDTO request, CancellationToken ct = default)
         {
-            if (string.IsNullOrWhiteSpace(request.Code) || request.Code.Trim().Length is < 3 or > 5)
-            {
-                throw new ValidationException("Currency code is required (3-5 chars).");
-            }
+            var items = await _currencies.GetAllAsync(ct);
+            return items.Select(_mapper.Map<CurrencyResponseDTO>).ToList();
+        }
 
-            if (request.ExchangeRateToBase <= 0)
-            {
-                throw new ValidationException("ExchangeRateToBase must be positive.");
-            }
+        public async Task<CurrencyResponseDTO> GetByIdAsync(int id, CancellationToken ct = default)
+        {
+            var entity = await _currencies.GetByIdAsync(id, trackChanges: false, ct);
+            if (entity is null)
+                throw new NotFoundException("Currency not found.");
+
+            return _mapper.Map<CurrencyResponseDTO>(entity);
+        }
+
+        public async Task<int> CreateAsync(CreateCurrencyRequestDTO request, CancellationToken ct = default)
+        {
+            ValidationHelpers.RequireNotEmpty(request.Code, nameof(request.Code));
+            ValidationHelpers.RequireNotEmpty(request.Name, nameof(request.Name));
 
             var code = request.Code.Trim().ToUpperInvariant();
-            if (await _repo.ExistsByCodeAsync(code, ct))
-            {
-                throw new ConflictException("Currency code already exists.");
-            }
+            var name = request.Name.Trim();
 
-            var currency = new Currency
+            if (request.ExchangeRateToBase <= 0)
+                throw new ValidationException("ExchangeRateToBase must be positive.");
+
+            if (await _currencies.ExistsByCodeAsync(code, ct))
+                throw new ConflictException("A currency with the same code already exists.");
+
+            var entity = new Currency
             {
                 Code = code,
-                Name = request.Name.Trim(),
+                Name = name,
                 ExchangeRateToBase = request.ExchangeRateToBase,
                 IsActive = request.IsActive
             };
 
-            await _repo.AddAsync(currency, ct);
-            await _repo.SaveChangesAsync(ct);
+            await _currencies.AddAsync(entity, ct);
+            await _currencies.SaveChangesAsync(ct);
 
-            _logger.LogInformation("Currency created {Code}", code);
-            return currency.Id;
+            _logger.LogInformation("Currency created: {CurrencyId} {Code}", entity.Id, entity.Code);
+            return entity.Id;
         }
 
-        public async Task UpdateAsync(int id, CurrencyRequestDTO request, CancellationToken ct = default)
+        public async Task UpdateAsync(int id, UpdateCurrencyRequestDTO request, CancellationToken ct = default)
         {
-            var currency = await _repo.GetByIdAsync(id, trackChanges: true, ct);
-            if (currency is null)
-            {
-                throw new NotFoundException("Currency not found.");
-            }
+            ValidationHelpers.RequireNotEmpty(request.Name, nameof(request.Name));
+
             if (request.ExchangeRateToBase <= 0)
-            {
                 throw new ValidationException("ExchangeRateToBase must be positive.");
-            }
 
-            currency.Name = request.Name.Trim();
-            currency.ExchangeRateToBase = request.ExchangeRateToBase;
-            currency.IsActive = request.IsActive;
-
-            await _repo.SaveChangesAsync(ct);
-        }
-
-        public async Task DeactivateAsync(int id, CancellationToken ct = default)
-        {
-            var currency = await _repo.GetByIdAsync(id, trackChanges: true, ct);
-            if (currency is null)
-            {
+            var entity = await _currencies.GetByIdAsync(id, trackChanges: true, ct);
+            if (entity is null)
                 throw new NotFoundException("Currency not found.");
-            }
 
-            if (await _repo.IsUsedInActivePoliciesAsync(id, ct))
+            if (entity.IsActive && !request.IsActive)
             {
-                throw new ValidationException("Currency cannot be deactivated because it is used in active policies.");
+                var used = await _currencies.IsUsedInActivePoliciesAsync(id, ct);
+                if (used)
+                    throw new BusinessRuleException("Cannot deactivate a currency that is used in active policies.");
             }
 
-            currency.IsActive = false;
-            await _repo.SaveChangesAsync(ct);
-        }
+            entity.Name = request.Name.Trim();
+            entity.ExchangeRateToBase = request.ExchangeRateToBase;
+            entity.IsActive = request.IsActive;
 
-        public async Task ActivateAsync(int id, CancellationToken ct = default)
-        {
-            var currency = await _repo.GetByIdAsync(id, trackChanges: true, ct);
-            if (currency is null)
-            {
-                throw new NotFoundException("Currency not found");
-            }
-
-            currency.IsActive = true;
-            await _repo.SaveChangesAsync(ct);
+            await _currencies.SaveChangesAsync(ct);
+            _logger.LogInformation("Currency updated: {CurrencyId}", id);
         }
     }

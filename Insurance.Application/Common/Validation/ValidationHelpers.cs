@@ -32,7 +32,13 @@ namespace Insurance.Application.Common.Validation;
             }
         }
 
-        public static void ValidateEmailIfProvided(string? email)
+        public static void RequireInRange(decimal value, decimal min, decimal max, string fieldName)
+        {
+            if (value < min || value > max)
+                throw new ValidationException($"{fieldName} must be between {min} and {max}.");
+        }
+
+    public static void ValidateEmailIfProvided(string? email)
         {
             if (!string.IsNullOrWhiteSpace(email) && !EmailRegex.IsMatch(email))
             {

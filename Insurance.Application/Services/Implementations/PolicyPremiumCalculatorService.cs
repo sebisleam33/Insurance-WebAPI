@@ -1,11 +1,13 @@
-﻿using Insurance.Application.Services.Interfaces;
-using Insurance.Infrastructure.Repositories.Interfaces;
+﻿using Insurance.Application.Common.Exceptions;
+using Insurance.Application.Common.Validation;
+using Insurance.Application.Services.Interfaces;
 using Insurance.Domain.Enums;
+using Insurance.Infrastructure.Repositories.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Insurance.Application.Services.Implementations;
 
-    public sealed class PolicyPremiumCalculatorService : IPolicyPremiumCalculatorService
+public sealed class PolicyPremiumCalculatorService : IPolicyPremiumCalculatorService
     {
         private readonly IFeeConfigurationRepository _fees;
         private readonly IRiskFactorConfigurationRepository _risk;
@@ -29,7 +31,7 @@ namespace Insurance.Application.Services.Implementations;
             BuildingType buildingType,
             CancellationToken ct = default)
         {
-            if (basePremium <= 0) return basePremium;
+            ValidationHelpers.RequirePositive(basePremium, nameof(basePremium));
 
             var now = DateTime.UtcNow;
 
@@ -63,8 +65,11 @@ namespace Insurance.Application.Services.Implementations;
                 }
             }
 
-            var final = basePremium * (1 + sum);
+            var final = basePremium * (1m + sum);
             final = Math.Round(final, 2, MidpointRounding.AwayFromZero);
+
+            if (final <= 0)
+                throw new BusinessRuleException("Calculated final premium must be > 0.");
 
             _logger.LogInformation("Premium calc base={Base} sum={Sum} final={Final}", basePremium, sum, final);
             return final;

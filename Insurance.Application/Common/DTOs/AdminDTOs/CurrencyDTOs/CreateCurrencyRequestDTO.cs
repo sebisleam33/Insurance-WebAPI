@@ -1,6 +1,6 @@
-﻿namespace Insurance.Application.Common.DTOs.AdminDTOs;
+﻿namespace Insurance.Application.Common.DTOs.AdminDTOs.CurrencyDTOs;
 
-    public sealed class CurrencyRequestDTO
+    public sealed class CreateCurrencyRequestDTO
     {
         public string Code { get; init; } = null!;
         public string Name { get; init; } = null!;

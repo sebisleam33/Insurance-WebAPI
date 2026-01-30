@@ -14,8 +14,6 @@ namespace Insurance.Infrastructure.Persistence;
         public DbSet<Country> Countries => Set<Country>();
         public DbSet<County> Counties => Set<County>();
         public DbSet<City> Cities => Set<City>();
-
-        // NEW
         public DbSet<Broker> Brokers => Set<Broker>();
         public DbSet<Policy> Policies => Set<Policy>();
         public DbSet<Currency> Currencies => Set<Currency>();

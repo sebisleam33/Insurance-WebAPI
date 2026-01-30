@@ -5,21 +5,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Insurance.Infrastructure.Repositories.Implementations;
 
-    public sealed class FeeConfigurationRepository : IFeeConfigurationRepository
+public sealed class FeeConfigurationRepository : IFeeConfigurationRepository
     {
         private readonly AppDbContext _db;
         public FeeConfigurationRepository(AppDbContext db) => _db = db;
 
-        public async Task<IReadOnlyList<FeeConfiguration>> GetAllAsync(CancellationToken ct = default)
-            => await _db.FeeConfigurations.AsNoTracking().OrderByDescending(x => x.EffectiveFromUtc).ToListAsync(ct);
-
         public async Task<IReadOnlyList<FeeConfiguration>> GetActiveForNowAsync(DateTime nowUtc, CancellationToken ct = default)
-        {
-            return await _db.FeeConfigurations.AsNoTracking()
-                .Where(x => x.IsActive
-                            && x.EffectiveFromUtc <= nowUtc
-                            && (x.EffectiveToUtc == null || x.EffectiveToUtc >= nowUtc))
+            => await _db.FeeConfigurations
+                .AsNoTracking()
+                .Where(x => x.IsActive &&
+                            x.EffectiveFromUtc <= nowUtc &&
+                            (x.EffectiveToUtc == null || x.EffectiveToUtc >= nowUtc))
                 .ToListAsync(ct);
+
+        public async Task<(IReadOnlyList<FeeConfiguration> Items, int TotalCount)> ListAsync(int page, int pageSize, CancellationToken ct = default)
+        {
+            var q = _db.FeeConfigurations.AsNoTracking().OrderByDescending(x => x.EffectiveFromUtc);
+
+            var total = await q.CountAsync(ct);
+            var items = await q.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
+
+            return (items, total);
         }
 
         public async Task<FeeConfiguration?> GetByIdAsync(int id, bool trackChanges, CancellationToken ct = default)
