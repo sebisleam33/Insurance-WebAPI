@@ -15,11 +15,11 @@ public sealed class PolicyDetailsResponseDTO
         public string BuildingStreet { get; set; } = null!;
         public string BuildingNumber { get; set; } = null!;
 
-        public Guid CityId { get; set; }
+        public int CityId { get; set; }
         public string CityName { get; set; } = null!;
-        public Guid CountyId { get; set; }
+        public int CountyId { get; set; }
         public string CountyName { get; set; } = null!;
-        public Guid CountryId { get; set; }
+        public int CountryId { get; set; }
         public string CountryName { get; set; } = null!;
 
         public Guid BrokerId { get; set; }

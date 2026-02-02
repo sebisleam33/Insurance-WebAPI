@@ -17,15 +17,17 @@ public sealed class ApiMappingProfile : Profile
     {
         public ApiMappingProfile()
         {
+
             CreateMap<CreateClientRequestDTO, Client>()
                 .ForMember(d => d.Id, opt => opt.Ignore())
                 .ForMember(d => d.Buildings, opt => opt.Ignore())
                 .ForMember(d => d.IdentifierChanges, opt => opt.Ignore())
-                .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name.Trim()))
-                .ForMember(d => d.IdentificationNumber, opt => opt.MapFrom(s => s.IdentificationNumber.Trim()))
-                .ForMember(d => d.Email, opt => opt.MapFrom(s => s.Email == null ? null : s.Email.Trim()))
-                .ForMember(d => d.Phone, opt => opt.MapFrom(s => s.Phone == null ? null : s.Phone.Trim()))
-                .ForMember(d => d.PrimaryAddress, opt => opt.MapFrom(s => s.PrimaryAddress == null ? null : s.PrimaryAddress.Trim()));
+                .ForMember(d => d.Policies, opt => opt.Ignore())
+                .ForMember(d => d.Name, opt => opt.MapFrom(s => Trim(s.Name)))
+                .ForMember(d => d.IdentificationNumber, opt => opt.MapFrom(s => Trim(s.IdentificationNumber)))
+                .ForMember(d => d.Email, opt => opt.MapFrom(s => TrimOrNull(s.Email)))
+                .ForMember(d => d.Phone, opt => opt.MapFrom(s => TrimOrNull(s.Phone)))
+                .ForMember(d => d.PrimaryAddress, opt => opt.MapFrom(s => TrimOrNull(s.PrimaryAddress)));
 
             CreateMap<UpdateClientRequestDTO, Client>()
                 .ForMember(d => d.Id, opt => opt.Ignore())
@@ -33,34 +35,33 @@ public sealed class ApiMappingProfile : Profile
                 .ForMember(d => d.Type, opt => opt.Ignore())
                 .ForMember(d => d.Buildings, opt => opt.Ignore())
                 .ForMember(d => d.IdentifierChanges, opt => opt.Ignore())
-                .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name.Trim()))
-                .ForMember(d => d.Email, opt => opt.MapFrom(s => s.Email == null ? null : s.Email.Trim()))
-                .ForMember(d => d.Phone, opt => opt.MapFrom(s => s.Phone == null ? null : s.Phone.Trim()))
-                .ForMember(d => d.PrimaryAddress, opt => opt.MapFrom(s => s.PrimaryAddress == null ? null : s.PrimaryAddress.Trim()));
+                .ForMember(d => d.Policies, opt => opt.Ignore())
+                .ForMember(d => d.Name, opt => opt.MapFrom(s => Trim(s.Name)))
+                .ForMember(d => d.Email, opt => opt.MapFrom(s => TrimOrNull(s.Email)))
+                .ForMember(d => d.Phone, opt => opt.MapFrom(s => TrimOrNull(s.Phone)))
+                .ForMember(d => d.PrimaryAddress, opt => opt.MapFrom(s => TrimOrNull(s.PrimaryAddress)));
 
+            CreateMap<Client, ClientListItemResponseDTO>();
 
             CreateMap<CreateBuildingRequestDTO, Building>()
                 .ForMember(d => d.Id, opt => opt.Ignore())
                 .ForMember(d => d.ClientId, opt => opt.Ignore())
                 .ForMember(d => d.Client, opt => opt.Ignore())
                 .ForMember(d => d.City, opt => opt.Ignore())
-                .ForMember(d => d.Street, opt => opt.MapFrom(s => s.Street.Trim()))
-                .ForMember(d => d.Number, opt => opt.MapFrom(s => s.Number.Trim()));
+                .ForMember(d => d.Policies, opt => opt.Ignore())
+                .ForMember(d => d.Street, opt => opt.MapFrom(s => Trim(s.Street)))
+                .ForMember(d => d.Number, opt => opt.MapFrom(s => Trim(s.Number)));
 
             CreateMap<UpdateBuildingRequestDTO, Building>()
                 .ForMember(d => d.Id, opt => opt.Ignore())
                 .ForMember(d => d.ClientId, opt => opt.Ignore())
                 .ForMember(d => d.Client, opt => opt.Ignore())
                 .ForMember(d => d.City, opt => opt.Ignore())
-                .ForMember(d => d.Street, opt => opt.MapFrom(s => s.Street.Trim()))
-                .ForMember(d => d.Number, opt => opt.MapFrom(s => s.Number.Trim()));
+                .ForMember(d => d.Policies, opt => opt.Ignore())
+                .ForMember(d => d.Street, opt => opt.MapFrom(s => Trim(s.Street)))
+                .ForMember(d => d.Number, opt => opt.MapFrom(s => Trim(s.Number)));
 
-            CreateMap<Client, ClientListItemResponseDTO>();
             CreateMap<Building, BuildingListItemResponseDTO>();
-
-            CreateMap<Country, CountryResponseDTO>();
-            CreateMap<County, CountyResponseDTO>();
-            CreateMap<City, CityResponseDTO>();
 
             CreateMap<Building, BuildingDetailsResponseDTO>()
                 .ForMember(d => d.CityName, opt => opt.MapFrom(s => s.City.Name))
@@ -69,20 +70,26 @@ public sealed class ApiMappingProfile : Profile
                 .ForMember(d => d.CountryId, opt => opt.MapFrom(s => s.City.County.CountryId))
                 .ForMember(d => d.CountryName, opt => opt.MapFrom(s => s.City.County.Country.Name));
 
+            CreateMap<Country, CountryResponseDTO>();
+            CreateMap<County, CountyResponseDTO>();
+            CreateMap<City, CityResponseDTO>();
+
             CreateMap<CreateBrokerRequestDTO, Broker>()
                 .ForMember(d => d.Id, opt => opt.Ignore())
-                .ForMember(d => d.BrokerCode, opt => opt.MapFrom(s => s.BrokerCode.Trim()))
-                .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name.Trim()))
-                .ForMember(d => d.Email, opt => opt.MapFrom(s => s.Email == null ? null : s.Email.Trim()))
-                .ForMember(d => d.Phone, opt => opt.MapFrom(s => s.Phone == null ? null : s.Phone.Trim()));
+                .ForMember(d => d.Policies, opt => opt.Ignore())
+                .ForMember(d => d.BrokerCode, opt => opt.MapFrom(s => Trim(s.BrokerCode)))
+                .ForMember(d => d.Name, opt => opt.MapFrom(s => Trim(s.Name)))
+                .ForMember(d => d.Email, opt => opt.MapFrom(s => TrimOrNull(s.Email)))
+                .ForMember(d => d.Phone, opt => opt.MapFrom(s => TrimOrNull(s.Phone)));
 
             CreateMap<UpdateBrokerRequestDTO, Broker>()
                 .ForMember(d => d.Id, opt => opt.Ignore())
                 .ForMember(d => d.BrokerCode, opt => opt.Ignore())
                 .ForMember(d => d.Status, opt => opt.Ignore())
-                .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name.Trim()))
-                .ForMember(d => d.Email, opt => opt.MapFrom(s => s.Email == null ? null : s.Email.Trim()))
-                .ForMember(d => d.Phone, opt => opt.MapFrom(s => s.Phone == null ? null : s.Phone.Trim()));
+                .ForMember(d => d.Policies, opt => opt.Ignore())
+                .ForMember(d => d.Name, opt => opt.MapFrom(s => Trim(s.Name)))
+                .ForMember(d => d.Email, opt => opt.MapFrom(s => TrimOrNull(s.Email)))
+                .ForMember(d => d.Phone, opt => opt.MapFrom(s => TrimOrNull(s.Phone)));
 
             CreateMap<Broker, BrokerResponseDTO>();
 
@@ -106,7 +113,7 @@ public sealed class ApiMappingProfile : Profile
 
             CreateMap<CreateFeeConfigurationRequestDTO, FeeConfiguration>()
                 .ForMember(d => d.Id, opt => opt.Ignore())
-                .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name.Trim()));
+                .ForMember(d => d.Name, opt => opt.MapFrom(s => Trim(s.Name)));
 
             CreateMap<FeeConfiguration, FeeConfigurationResponseDTO>();
 
@@ -114,12 +121,12 @@ public sealed class ApiMappingProfile : Profile
                 .ForMember(d => d.Id, opt => opt.Ignore());
 
             CreateMap<RiskFactorConfiguration, RiskFactorConfigurationResponseDTO>();
+
             CreateMap<Currency, CurrencyResponseDTO>();
-            CreateMap<CreateBrokerRequestDTO, Broker>()
-                .ForMember(d => d.Id, opt => opt.Ignore())
-                .ForMember(d => d.BrokerCode, opt => opt.MapFrom(s => s.BrokerCode.Trim()))
-                .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name.Trim()))
-                .ForMember(d => d.Email, opt => opt.MapFrom(s => s.Email == null ? null : s.Email.Trim()))
-                .ForMember(d => d.Phone, opt => opt.MapFrom(s => s.Phone == null ? null : s.Phone.Trim()));
-             }
         }
+
+        private static string Trim(string value) => value.Trim();
+
+        private static string? TrimOrNull(string? value)
+            => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+    }
