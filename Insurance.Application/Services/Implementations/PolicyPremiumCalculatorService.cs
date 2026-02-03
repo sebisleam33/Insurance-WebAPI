@@ -69,7 +69,9 @@ public sealed class PolicyPremiumCalculatorService : IPolicyPremiumCalculatorSer
             final = Math.Round(final, 2, MidpointRounding.AwayFromZero);
 
             if (final <= 0)
-                throw new BusinessRuleException("Calculated final premium must be > 0.");
+            { 
+                throw new BusinessRuleException("Calculated final premium must be > 0."); 
+            }
 
             _logger.LogInformation("Premium calc base={Base} sum={Sum} final={Final}", basePremium, sum, final);
             return final;

@@ -32,7 +32,9 @@ public sealed class CurrencyAdminService : ICurrencyAdminService
         {
             var entity = await _currencies.GetByIdAsync(id, trackChanges: false, ct);
             if (entity is null)
+            { 
                 throw new NotFoundException("Currency not found.");
+            }
 
             return _mapper.Map<CurrencyResponseDTO>(entity);
         }
@@ -46,10 +48,14 @@ public sealed class CurrencyAdminService : ICurrencyAdminService
             var name = request.Name.Trim();
 
             if (request.ExchangeRateToBase <= 0)
-                throw new ValidationException("ExchangeRateToBase must be positive.");
+            { 
+                throw new ValidationException("ExchangeRateToBase must be positive."); 
+            }
 
             if (await _currencies.ExistsByCodeAsync(code, ct))
-                throw new ConflictException("A currency with the same code already exists.");
+            { 
+                throw new ConflictException("A currency with the same code already exists."); 
+            }
 
             var entity = new Currency
             {
@@ -71,17 +77,23 @@ public sealed class CurrencyAdminService : ICurrencyAdminService
             ValidationHelpers.RequireNotEmpty(request.Name, nameof(request.Name));
 
             if (request.ExchangeRateToBase <= 0)
-                throw new ValidationException("ExchangeRateToBase must be positive.");
+            { 
+                throw new ValidationException("ExchangeRateToBase must be positive."); 
+            }
 
             var entity = await _currencies.GetByIdAsync(id, trackChanges: true, ct);
             if (entity is null)
-                throw new NotFoundException("Currency not found.");
+            { 
+                throw new NotFoundException("Currency not found."); 
+            }
 
             if (entity.IsActive && !request.IsActive)
             {
                 var used = await _currencies.IsUsedInActivePoliciesAsync(id, ct);
                 if (used)
+                { 
                     throw new BusinessRuleException("Cannot deactivate a currency that is used in active policies.");
+                }
             }
 
             entity.Name = request.Name.Trim();

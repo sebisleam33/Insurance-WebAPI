@@ -53,12 +53,26 @@ public sealed class PolicyRepository : IPolicyRepository
                 .Include(p => p.Broker)
                 .Include(p => p.Currency);
 
-            if (clientId.HasValue) q = q.Where(x => x.ClientId == clientId.Value);
-            if (brokerId.HasValue) q = q.Where(x => x.BrokerId == brokerId.Value);
-            if (status.HasValue) q = q.Where(x => x.Status == status.Value);
-
-            if (startDateUtc.HasValue) q = q.Where(x => x.EndDateUtc >= startDateUtc.Value);
-            if (endDateUtc.HasValue) q = q.Where(x => x.StartDateUtc <= endDateUtc.Value);
+            if (clientId.HasValue) 
+            { 
+                q = q.Where(x => x.ClientId == clientId.Value); 
+            }
+            if (brokerId.HasValue) 
+            { 
+                q = q.Where(x => x.BrokerId == brokerId.Value); 
+            }
+            if (status.HasValue) 
+            { 
+                q = q.Where(x => x.Status == status.Value); 
+            }
+            if (startDateUtc.HasValue) 
+            { 
+                q = q.Where(x => x.EndDateUtc >= startDateUtc.Value); 
+            }
+            if (endDateUtc.HasValue) 
+            { 
+                q = q.Where(x => x.StartDateUtc <= endDateUtc.Value); 
+            }
 
             var total = await q.CountAsync(ct);
 

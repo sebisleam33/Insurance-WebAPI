@@ -19,7 +19,6 @@ namespace Insurance.Infrastructure.Persistence;
         public DbSet<Currency> Currencies => Set<Currency>();
         public DbSet<FeeConfiguration> FeeConfigurations => Set<FeeConfiguration>();
         public DbSet<RiskFactorConfiguration> RiskFactorConfigurations => Set<RiskFactorConfiguration>();
-
         public DbSet<ClientIdentifierChange> ClientIdentifierChanges => Set<ClientIdentifierChange>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

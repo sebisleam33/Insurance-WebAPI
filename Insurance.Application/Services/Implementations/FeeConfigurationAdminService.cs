@@ -44,7 +44,9 @@ public sealed class FeeConfigurationAdminService : IFeeConfigurationAdminService
         {
             var entity = await _fees.GetByIdAsync(id, trackChanges: false, ct);
             if (entity is null)
-                throw new NotFoundException("Fee configuration not found.");
+            { 
+                throw new NotFoundException("Fee configuration not found."); 
+            }
 
             return _mapper.Map<FeeConfigurationResponseDTO>(entity);
         }
@@ -55,7 +57,9 @@ public sealed class FeeConfigurationAdminService : IFeeConfigurationAdminService
             ValidationHelpers.RequireInRange(request.Percentage, -0.99m, 5m, nameof(request.Percentage));
 
             if (request.EffectiveToUtc.HasValue && request.EffectiveToUtc.Value <= request.EffectiveFromUtc)
-                throw new ValidationException("EffectiveToUtc must be after EffectiveFromUtc.");
+            { 
+                throw new ValidationException("EffectiveToUtc must be after EffectiveFromUtc."); 
+            }
 
             var entity = _mapper.Map<FeeConfiguration>(request);
 
@@ -71,11 +75,15 @@ public sealed class FeeConfigurationAdminService : IFeeConfigurationAdminService
             ValidationHelpers.RequireInRange(request.Percentage, -0.99m, 5m, nameof(request.Percentage));
 
             if (request.EffectiveToUtc.HasValue && request.EffectiveToUtc.Value <= request.EffectiveFromUtc)
-                throw new ValidationException("EffectiveToUtc must be after EffectiveFromUtc.");
+            { 
+                throw new ValidationException("EffectiveToUtc must be after EffectiveFromUtc."); 
+            }
 
             var entity = await _fees.GetByIdAsync(id, trackChanges: true, ct);
             if (entity is null)
+            { 
                 throw new NotFoundException("Fee configuration not found.");
+            }
 
             entity.Percentage = request.Percentage;
             entity.EffectiveFromUtc = request.EffectiveFromUtc;

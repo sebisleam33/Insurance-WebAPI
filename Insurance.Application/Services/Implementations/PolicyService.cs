@@ -44,44 +44,44 @@ public sealed class PolicyService : IPolicyService
 
         public async Task<Guid> CreateDraftAsync(CreatePolicyRequestDTO request, CancellationToken ct = default)
         {
-            if (request.ClientId == Guid.Empty)
-                throw new ValidationException("ClientId is required.");
-
-            if (request.BuildingId == Guid.Empty)
-                throw new ValidationException("BuildingId is required.");
-
-            if (request.BrokerId == Guid.Empty)
-                throw new ValidationException("BrokerId is required.");
-
-            if (request.BasePremium <= 0)
-                throw new ValidationException("Base premium must be positive.");
-
-            if (request.BasePremium <= 0)
-                throw new ValidationException("Base premium must be positive.");
-            
-            if (request.EndDateUtc <= request.StartDateUtc)
-                throw new ValidationException("EndDateUtc must be after StartDateUtc.");
+            ValidationHelpers.RequireNotEmpty(request.ClientId, nameof(request.ClientId));
+            ValidationHelpers.RequireNotEmpty(request.BuildingId, nameof(request.BuildingId));
+            ValidationHelpers.RequireNotEmpty(request.BrokerId, nameof(request.BrokerId));
+            ValidationHelpers.RequirePositive(request.BasePremium, nameof(request.BasePremium));
+            ValidationHelpers.RequireAfter(request.EndDateUtc, request.StartDateUtc, nameof(request.EndDateUtc), nameof(request.StartDateUtc));
 
             if (!await _clients.ExistsByIdAsync(request.ClientId, ct))
-                throw new NotFoundException("Client not found.");
+            { 
+                throw new NotFoundException("Client not found."); 
+            }
 
-            var building = await _buildings.GetByIdWithGeographyAsync(request.BuildingId, ct);
+                var building = await _buildings.GetByIdWithGeographyAsync(request.BuildingId, ct);
             if (building is null || building.ClientId != request.ClientId)
-                throw new ValidationException("Building not found for client.");
+            { 
+                throw new ValidationException("Building not found for client."); 
+            }
 
-            var broker = await _brokers.GetByIdAsync(request.BrokerId, trackChanges: false, ct);
+                var broker = await _brokers.GetByIdAsync(request.BrokerId, trackChanges: false, ct);
             if (broker is null)
-                throw new NotFoundException("Broker not found.");
+            { 
+                throw new NotFoundException("Broker not found."); 
+            }
 
             if (broker.Status != BrokerStatus.Active)
-                throw new ForbiddenException("Broker is inactive and cannot create policies.");
+            { 
+                throw new ForbiddenException("Broker is inactive and cannot create policies."); 
+            }
 
-            var currency = await _currencies.GetByIdAsync(request.CurrencyId, trackChanges: false, ct);
+                var currency = await _currencies.GetByIdAsync(request.CurrencyId, trackChanges: false, ct);
             if (currency is null)
-                throw new NotFoundException("Currency not found.");
+            { 
+                throw new NotFoundException("Currency not found."); 
+            }
 
             if (!currency.IsActive)
-                throw new BusinessRuleException("Currency is inactive and cannot be used for new policies.");
+            { 
+                throw new BusinessRuleException("Currency is inactive and cannot be used for new policies."); 
+            }
 
             var finalPremium = await _calculator.CalculateFinalPremiumAsync(
                 request.BasePremium,
@@ -90,6 +90,8 @@ public sealed class PolicyService : IPolicyService
                 building.CityId,
                 building.BuildingType,
                 ct);
+
+            var now = DateTime.UtcNow;
 
             var policy = new Policy
             {
@@ -104,8 +106,8 @@ public sealed class PolicyService : IPolicyService
                 EndDateUtc = request.EndDateUtc,
                 BasePremium = request.BasePremium,
                 FinalPremium = finalPremium,
-                CreatedAtUtc = DateTime.UtcNow,
-                UpdatedAtUtc = DateTime.UtcNow
+                CreatedAtUtc = now,
+                UpdatedAtUtc = now
             };
 
             await _policies.AddAsync(policy, ct);
@@ -116,23 +118,23 @@ public sealed class PolicyService : IPolicyService
         }
 
         public async Task ActivateAsync(Guid policyId, CancellationToken ct = default)
-        {
-            var policy = await _policies.GetByIdAsync(policyId, trackChanges: true, ct);
-            if (policy is null)
-                throw new NotFoundException("Policy not found.");
+            {
+                var policy = await _policies.GetByIdAsync(policyId, trackChanges: true, ct);
+                if (policy is null)
+                    throw new NotFoundException("Policy not found.");
 
-            if (policy.Status != PolicyStatus.Draft)
-                throw new BusinessRuleException("Only Draft policies can be activated.");
+                if (policy.Status != PolicyStatus.Draft)
+                    throw new BusinessRuleException("Only Draft policies can be activated.");
 
-            if (policy.StartDateUtc.Date < DateTime.UtcNow.Date)
-                throw new BusinessRuleException("Start date cannot be in the past.");
+                if (policy.StartDateUtc.Date < DateTime.UtcNow.Date)
+                    throw new BusinessRuleException("Start date cannot be in the past.");
 
-            policy.Status = PolicyStatus.Active;
-            policy.UpdatedAtUtc = DateTime.UtcNow;
+                policy.Status = PolicyStatus.Active;
+                policy.UpdatedAtUtc = DateTime.UtcNow;
 
-            await _policies.SaveChangesAsync(ct);
-            _logger.LogInformation("Policy activated {PolicyId}", policyId);
-        }
+                await _policies.SaveChangesAsync(ct);
+                _logger.LogInformation("Policy activated {PolicyId}", policyId);
+            }
 
         public async Task CancelAsync(Guid policyId, CancelPolicyRequestDTO request, CancellationToken ct = default)
         {

@@ -51,7 +51,9 @@ public sealed class RiskFactorAdminService : IRiskFactorAdminService
         {
             var entity = await _risks.GetByIdAsync(id, trackChanges: false, ct);
             if (entity is null)
-                throw new NotFoundException("Risk factor configuration not found.");
+            { 
+                throw new NotFoundException("Risk factor configuration not found."); 
+            }
 
             return _mapper.Map<RiskFactorConfigurationResponseDTO>(entity);
         }
@@ -76,7 +78,9 @@ public sealed class RiskFactorAdminService : IRiskFactorAdminService
 
             var entity = await _risks.GetByIdAsync(id, trackChanges: true, ct);
             if (entity is null)
-                throw new NotFoundException("Risk factor configuration not found.");
+            { 
+                throw new NotFoundException("Risk factor configuration not found."); 
+            }
 
             entity.AdjustmentPercentage = request.AdjustmentPercentage;
             entity.IsActive = request.IsActive;
@@ -91,36 +95,58 @@ public sealed class RiskFactorAdminService : IRiskFactorAdminService
             {
                 case RiskFactorLevel.BuildingType:
                     if (request.BuildingType is null)
-                        throw new ValidationException("BuildingType must be provided when Level is BuildingType.");
+                    { 
+                        throw new ValidationException("BuildingType must be provided when Level is BuildingType."); 
+                    }
                     if (request.ReferenceId is not null)
-                        throw new ValidationException("ReferenceId must be null when Level is BuildingType.");
+                    { 
+                        throw new ValidationException("ReferenceId must be null when Level is BuildingType."); 
+                    }
                     break;
 
                 case RiskFactorLevel.Country:
                     if (request.ReferenceId is null)
-                        throw new ValidationException("ReferenceId must be provided when Level is Country.");
+                    { 
+                        throw new ValidationException("ReferenceId must be provided when Level is Country."); 
+                    }
                     if (!await _geo.CountryExistsAsync(request.ReferenceId.Value, ct))
-                        throw new NotFoundException("Country not found.");
+                    { 
+                        throw new NotFoundException("Country not found."); 
+                    }
                     if (request.BuildingType is not null)
-                        throw new ValidationException("BuildingType must be null for geographic levels.");
+                    { 
+                        throw new ValidationException("BuildingType must be null for geographic levels."); 
+                    }
                     break;
 
                 case RiskFactorLevel.County:
                     if (request.ReferenceId is null)
-                        throw new ValidationException("ReferenceId must be provided when Level is County.");
+                    { 
+                        throw new ValidationException("ReferenceId must be provided when Level is County."); 
+                    }
                     if (!await _geo.CountyExistsAsync(request.ReferenceId.Value, ct))
-                        throw new NotFoundException("County not found.");
+                    { 
+                        throw new NotFoundException("County not found."); 
+                    }
                     if (request.BuildingType is not null)
-                        throw new ValidationException("BuildingType must be null for geographic levels.");
+                    { 
+                        throw new ValidationException("BuildingType must be null for geographic levels."); 
+                    }
                     break;
 
                 case RiskFactorLevel.City:
                     if (request.ReferenceId is null)
+                    { 
                         throw new ValidationException("ReferenceId must be provided when Level is City.");
+                    }
                     if (!await _geo.CityExistsAsync(request.ReferenceId.Value, ct))
-                        throw new NotFoundException("City not found.");
+                    { 
+                        throw new NotFoundException("City not found."); 
+                    }
                     if (request.BuildingType is not null)
-                        throw new ValidationException("BuildingType must be null for geographic levels.");
+                    { 
+                        throw new ValidationException("BuildingType must be null for geographic levels."); 
+                    }
                     break;
 
                 default:

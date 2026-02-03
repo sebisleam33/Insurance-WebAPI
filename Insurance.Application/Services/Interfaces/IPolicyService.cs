@@ -10,7 +10,6 @@ public interface IPolicyService
         Task ActivateAsync(Guid policyId, CancellationToken ct = default);
         Task CancelAsync(Guid policyId, CancelPolicyRequestDTO request, CancellationToken ct = default);
         Task<PolicyDetailsResponseDTO> GetByIdAsync(Guid policyId, CancellationToken ct = default);
-
         Task<PagedResult<PolicyListItemResponseDTO>> SearchAsync(
             Guid? clientId,
             Guid? brokerId,
