@@ -9,6 +9,8 @@ variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "1"
   DOTNET_NOLOGO: "true"
   REPORTGENERATOR_DIR: "C:\\tools\\reportgenerator"
+  GIT_STRATEGY: fetch
+  GIT_CLEAN_FLAGS: none
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
