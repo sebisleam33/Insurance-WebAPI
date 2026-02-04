@@ -30,19 +30,33 @@ test:
     - |
       dotnet test -c Release --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test-results.trx"
 
-      if (-not (Test-Path $env:REPORTGENERATOR_DIR)) {
-        New-Item -ItemType Directory -Force $env:REPORTGENERATOR_DIR | Out-Null
+      $rgVersion = "5.5.1"
+      $rgDir = "$PWD\.tools\reportgenerator"
+      $rgNupkg = "$rgDir\reportgenerator.$rgVersion.nupkg"
+
+      New-Item -ItemType Directory -Force $rgDir | Out-Null
+
+      if (-not (Test-Path $rgNupkg)) {
+        dotnet nuget locals all --clear
+        dotnet nuget add source "https://api.nuget.org/v3/index.json" -n nuget-org -p 1>$null 2>$null
+        Invoke-WebRequest -Uri "https://www.nuget.org/api/v2/package/dotnet-reportgenerator-globaltool/$rgVersion" -OutFile $rgNupkg
       }
 
-      if (-not (Test-Path "$env:REPORTGENERATOR_DIR\reportgenerator.exe")) {
-        dotnet tool install --tool-path $env:REPORTGENERATOR_DIR dotnet-reportgenerator-globaltool
-      }
+      Add-Type -AssemblyName System.IO.Compression.FileSystem
+      $extractDir = "$rgDir\extracted"
+      if (Test-Path $extractDir) { Remove-Item -Recurse -Force $extractDir }
+      [System.IO.Compression.ZipFile]::ExtractToDirectory($rgNupkg, $extractDir)
 
-      & "$env:REPORTGENERATOR_DIR\reportgenerator.exe" `
+      $rgExe = Get-ChildItem -Recurse -Filter "reportgenerator.exe" $extractDir |
+        Where-Object { $_.FullName -match "\\tools\\net8\.0\\any\\" } |
+        Select-Object -First 1
+
+      if (-not $rgExe) { throw "reportgenerator.exe not found in extracted package." }
+
+      & $rgExe.FullName `
         "-reports:**/TestResults/**/coverage.cobertura.xml" `
         "-targetdir:CoverageReport" `
         "-reporttypes:Html;Cobertura"
-
   artifacts:
     when: always
     expire_in: 7 days
@@ -54,3 +68,4 @@ test:
       coverage_report:
         coverage_format: cobertura
         path: CoverageReport/Cobertura.xml
+
