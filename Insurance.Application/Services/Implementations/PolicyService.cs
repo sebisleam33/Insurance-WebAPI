@@ -55,13 +55,13 @@ public sealed class PolicyService : IPolicyService
                 throw new NotFoundException("Client not found."); 
             }
 
-                var building = await _buildings.GetByIdWithGeographyAsync(request.BuildingId, ct);
+            var building = await _buildings.GetByIdWithGeographyAsync(request.BuildingId, ct);
             if (building is null || building.ClientId != request.ClientId)
             { 
                 throw new ValidationException("Building not found for client."); 
             }
 
-                var broker = await _brokers.GetByIdAsync(request.BrokerId, trackChanges: false, ct);
+            var broker = await _brokers.GetByIdAsync(request.BrokerId, trackChanges: false, ct);
             if (broker is null)
             { 
                 throw new NotFoundException("Broker not found."); 
@@ -72,7 +72,7 @@ public sealed class PolicyService : IPolicyService
                 throw new ForbiddenException("Broker is inactive and cannot create policies."); 
             }
 
-                var currency = await _currencies.GetByIdAsync(request.CurrencyId, trackChanges: false, ct);
+            var currency = await _currencies.GetByIdAsync(request.CurrencyId, trackChanges: false, ct);
             if (currency is null)
             { 
                 throw new NotFoundException("Currency not found."); 
@@ -118,37 +118,49 @@ public sealed class PolicyService : IPolicyService
         }
 
         public async Task ActivateAsync(Guid policyId, CancellationToken ct = default)
-            {
-                var policy = await _policies.GetByIdAsync(policyId, trackChanges: true, ct);
-                if (policy is null)
-                    throw new NotFoundException("Policy not found.");
+        {
+            var policy = await _policies.GetByIdAsync(policyId, trackChanges: true, ct);
+            if (policy is null)
+            { 
+                throw new NotFoundException("Policy not found."); 
+            }
 
-                if (policy.Status != PolicyStatus.Draft)
-                    throw new BusinessRuleException("Only Draft policies can be activated.");
+            if (policy.Status != PolicyStatus.Draft)
+            { 
+                throw new BusinessRuleException("Only Draft policies can be activated."); 
+            }
 
-                if (policy.StartDateUtc.Date < DateTime.UtcNow.Date)
-                    throw new BusinessRuleException("Start date cannot be in the past.");
+            if (policy.StartDateUtc.Date < DateTime.UtcNow.Date)
+            { 
+                throw new BusinessRuleException("Start date cannot be in the past."); 
+            }
 
                 policy.Status = PolicyStatus.Active;
                 policy.UpdatedAtUtc = DateTime.UtcNow;
 
                 await _policies.SaveChangesAsync(ct);
                 _logger.LogInformation("Policy activated {PolicyId}", policyId);
-            }
+        }
 
         public async Task CancelAsync(Guid policyId, CancelPolicyRequestDTO request, CancellationToken ct = default)
         {
             ValidationHelpers.RequireNotEmpty(request.Reason, nameof(request.Reason));
 
             if (request.CancelledAtUtc == default)
+            { 
                 throw new ValidationException("CancelledAtUtc is required.");
+            }
 
             var policy = await _policies.GetByIdAsync(policyId, trackChanges: true, ct);
             if (policy is null)
-                throw new NotFoundException("Policy not found.");
+            { 
+                throw new NotFoundException("Policy not found."); 
+            }
 
             if (policy.Status != PolicyStatus.Active)
+            { 
                 throw new BusinessRuleException("Only Active policies can be cancelled.");
+            }
 
             policy.Status = PolicyStatus.Cancelled;
             policy.CancelledAtUtc = request.CancelledAtUtc;
@@ -163,7 +175,9 @@ public sealed class PolicyService : IPolicyService
         {
             var policy = await _policies.GetByIdWithDetailsAsync(policyId, ct);
             if (policy is null)
-                throw new NotFoundException("Policy not found.");
+            { 
+                throw new NotFoundException("Policy not found."); 
+            }
 
             return _mapper.Map<PolicyDetailsResponseDTO>(policy);
         }
