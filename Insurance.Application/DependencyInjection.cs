@@ -17,6 +17,7 @@ public static class DependencyInjection
             services.AddScoped<IBrokerAdminService, BrokerAdminService>();
             services.AddScoped<IFeeConfigurationAdminService, FeeConfigurationAdminService>();
             services.AddScoped<IRiskFactorAdminService, RiskFactorAdminService>();
+            services.AddScoped<IPolicyReportsService, PolicyReportsService>();
 
             return services;
         }

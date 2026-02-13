@@ -2,6 +2,7 @@
 using Insurance.Application.Common.DTOs.AdminDTOs.BrokerDTOs;
 using Insurance.Application.Common.DTOs.AdminDTOs.CurrencyDTOs;
 using Insurance.Application.Common.DTOs.AdminDTOs.FeeDTOs;
+using Insurance.Application.Common.DTOs.AdminDTOs.ReportDTOs;
 using Insurance.Application.Common.DTOs.AdminDTOs.RiskFactorConfigurationDTOs;
 using Insurance.Application.Common.DTOs.BuildingDTOs;
 using Insurance.Application.Common.DTOs.ClientDTOs;
@@ -10,6 +11,7 @@ using Insurance.Application.Common.DTOs.PolicyDTOs;
 using Insurance.Domain.Entities;
 using Insurance.Domain.Entities.Geography;
 using Insurance.Domain.Entities.Metadata;
+using Insurance.Domain.Entities.Reports;
 
 namespace Insurance.Api.Mapping;
 
@@ -123,6 +125,13 @@ public sealed class ApiMappingProfile : Profile
             CreateMap<RiskFactorConfiguration, RiskFactorConfigurationResponseDTO>();
 
             CreateMap<Currency, CurrencyResponseDTO>();
+
+            CreateMap<PolicyReportQueryDTO, PolicyReportQuery>();
+
+            CreateMap<PoliciesByCountryReportRow, PoliciesByCountryRowDTO>();
+            CreateMap<PoliciesByCountyReportRow, PoliciesByCountyRowDTO>();
+            CreateMap<PoliciesByCityReportRow, PoliciesByCityRowDTO>();
+            CreateMap<PoliciesByBrokerReportRow, PoliciesByBrokerRowDTO>();
         }
 
         private static string Trim(string value) => value.Trim();
