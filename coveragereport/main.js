@@ -219,7 +219,7 @@ var assemblies = [
   {
     "name": "Insurance.Application",
     "classes": [
-      { "name": "Insurance.Api.Mapping.ApiMappingProfile", "rp": "Insurance.Application_ApiMappingProfile.html", "cl": 93, "ucl": 0, "cal": 93, "tl": 132, "cb": 138, "tb": 138, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Api.Mapping.ApiMappingProfile", "rp": "Insurance.Application_ApiMappingProfile.html", "cl": 98, "ucl": 0, "cal": 98, "tl": 141, "cb": 138, "tb": 138, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Application.Common.Exceptions.AppException", "rp": "Insurance.Application_AppException.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Application.Common.Exceptions.BusinessRuleException", "rp": "Insurance.Application_BusinessRuleException.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Application.Common.Exceptions.ConflictException", "rp": "Insurance.Application_ConflictException.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -228,16 +228,17 @@ var assemblies = [
       { "name": "Insurance.Application.Common.Exceptions.UnauthorizedException", "rp": "Insurance.Application_UnauthorizedException.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Application.Common.Exceptions.ValidationException", "rp": "Insurance.Application_ValidationException.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Application.Common.PagedResult<T>", "rp": "Insurance.Application_PagedResult_T_.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Insurance.Application.Common.Validation.ValidationHelpers", "rp": "Insurance.Application_ValidationHelpers.html", "cl": 26, "ucl": 0, "cal": 26, "tl": 48, "cb": 16, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Insurance.Application.Services.Implementations.BrokerAdminService", "rp": "Insurance.Application_BrokerAdminService.html", "cl": 63, "ucl": 5, "cal": 68, "tl": 116, "cb": 12, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Application.Common.Validation.ValidationHelpers", "rp": "Insurance.Application_ValidationHelpers.html", "cl": 48, "ucl": 0, "cal": 48, "tl": 82, "cb": 26, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Application.Services.Implementations.BrokerAdminService", "rp": "Insurance.Application_BrokerAdminService.html", "cl": 75, "ucl": 0, "cal": 75, "tl": 128, "cb": 18, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Application.Services.Implementations.BuildingService", "rp": "Insurance.Application_BuildingService.html", "cl": 73, "ucl": 5, "cal": 78, "tl": 129, "cb": 11, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Insurance.Application.Services.Implementations.ClientService", "rp": "Insurance.Application_ClientService.html", "cl": 84, "ucl": 8, "cal": 92, "tl": 149, "cb": 18, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Insurance.Application.Services.Implementations.CurrencyAdminService", "rp": "Insurance.Application_CurrencyAdminService.html", "cl": 53, "ucl": 3, "cal": 56, "tl": 94, "cb": 10, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Insurance.Application.Services.Implementations.FeeConfigurationAdminService", "rp": "Insurance.Application_FeeConfigurationAdminService.html", "cl": 49, "ucl": 0, "cal": 49, "tl": 88, "cb": 16, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Application.Services.Implementations.ClientService", "rp": "Insurance.Application_ClientService.html", "cl": 84, "ucl": 8, "cal": 92, "tl": 150, "cb": 18, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Application.Services.Implementations.CurrencyAdminService", "rp": "Insurance.Application_CurrencyAdminService.html", "cl": 61, "ucl": 1, "cal": 62, "tl": 106, "cb": 13, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Application.Services.Implementations.FeeConfigurationAdminService", "rp": "Insurance.Application_FeeConfigurationAdminService.html", "cl": 53, "ucl": 0, "cal": 53, "tl": 96, "cb": 16, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Application.Services.Implementations.GeographyService", "rp": "Insurance.Application_GeographyService.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 27, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Insurance.Application.Services.Implementations.PolicyPremiumCalculatorService", "rp": "Insurance.Application_PolicyPremiumCalculatorService.html", "cl": 40, "ucl": 0, "cal": 40, "tl": 77, "cb": 15, "tb": 19, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Insurance.Application.Services.Implementations.PolicyService", "rp": "Insurance.Application_PolicyService.html", "cl": 120, "ucl": 3, "cal": 123, "tl": 195, "cb": 39, "tb": 46, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Insurance.Application.Services.Implementations.RiskFactorAdminService", "rp": "Insurance.Application_RiskFactorAdminService.html", "cl": 69, "ucl": 9, "cal": 78, "tl": 130, "cb": 23, "tb": 33, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Application.Services.Implementations.PolicyPremiumCalculatorService", "rp": "Insurance.Application_PolicyPremiumCalculatorService.html", "cl": 41, "ucl": 0, "cal": 41, "tl": 79, "cb": 15, "tb": 19, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Application.Services.Implementations.PolicyReportsService", "rp": "Insurance.Application_PolicyReportsService.html", "cl": 40, "ucl": 0, "cal": 40, "tl": 75, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Application.Services.Implementations.PolicyService", "rp": "Insurance.Application_PolicyService.html", "cl": 128, "ucl": 2, "cal": 130, "tl": 211, "cb": 29, "tb": 34, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Application.Services.Implementations.RiskFactorAdminService", "rp": "Insurance.Application_RiskFactorAdminService.html", "cl": 91, "ucl": 0, "cal": 91, "tl": 156, "cb": 30, "tb": 33, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
   {
     "name": "Insurance.Domain",
@@ -253,6 +254,11 @@ var assemblies = [
       { "name": "Insurance.Domain.Entities.Metadata.FeeConfiguration", "rp": "Insurance.Domain_FeeConfiguration.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Domain.Entities.Metadata.RiskFactorConfiguration", "rp": "Insurance.Domain_RiskFactorConfiguration.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Insurance.Domain.Entities.Policy", "rp": "Insurance.Domain_Policy.html", "cl": 19, "ucl": 0, "cal": 19, "tl": 36, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Domain.Entities.Reports.PoliciesByBrokerReportRow", "rp": "Insurance.Domain_PoliciesByBrokerReportRow.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Domain.Entities.Reports.PoliciesByCityReportRow", "rp": "Insurance.Domain_PoliciesByCityReportRow.html", "cl": 11, "ucl": 0, "cal": 11, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Domain.Entities.Reports.PoliciesByCountryReportRow", "rp": "Insurance.Domain_PoliciesByCountryReportRow.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Domain.Entities.Reports.PoliciesByCountyReportRow", "rp": "Insurance.Domain_PoliciesByCountyReportRow.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Insurance.Domain.Entities.Reports.PolicyReportQuery", "rp": "Insurance.Domain_PolicyReportQuery.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
@@ -267,22 +273,16 @@ var riskHotspotMetrics = [
 
 var riskHotspots = [
   {
-    "assembly": "Insurance.Application", "class": "Insurance.Api.Mapping.ApiMappingProfile", "reportPath": "Insurance.Application_ApiMappingProfile.html", "methodName": ".ctor()", "methodShortName": ".ctor()", "fileIndex": 0, "line": 18,
+    "assembly": "Insurance.Application", "class": "Insurance.Api.Mapping.ApiMappingProfile", "reportPath": "Insurance.Application_ApiMappingProfile.html", "methodName": ".ctor()", "methodShortName": ".ctor()", "fileIndex": 0, "line": 20,
     "metrics": [
       { "value": 136, "exceeded": true },
       { "value": 136, "exceeded": true },
     ]},
   {
-    "assembly": "Insurance.Application", "class": "Insurance.Application.Services.Implementations.RiskFactorAdminService", "reportPath": "Insurance.Application_RiskFactorAdminService.html", "methodName": "ValidateCreateRequestAsync()", "methodShortName": "ValidateCreateRequestAsync()", "fileIndex": 0, "line": 89,
+    "assembly": "Insurance.Application", "class": "Insurance.Application.Services.Implementations.RiskFactorAdminService", "reportPath": "Insurance.Application_RiskFactorAdminService.html", "methodName": "ValidateCreateRequestAsync()", "methodShortName": "ValidateCreateRequestAsync()", "fileIndex": 0, "line": 93,
     "metrics": [
-      { "value": 33, "exceeded": true },
+      { "value": 21, "exceeded": false },
       { "value": 21, "exceeded": true },
-    ]},
-  {
-    "assembly": "Insurance.Application", "class": "Insurance.Application.Services.Implementations.PolicyService", "reportPath": "Insurance.Application_PolicyService.html", "methodName": "CreateDraftAsync()", "methodShortName": "CreateDraftAsync()", "fileIndex": 0, "line": 46,
-    "metrics": [
-      { "value": 24, "exceeded": false },
-      { "value": 24, "exceeded": true },
     ]},
   {
     "assembly": "Insurance.Application", "class": "Insurance.Application.Services.Implementations.PolicyPremiumCalculatorService", "reportPath": "Insurance.Application_PolicyPremiumCalculatorService.html", "methodName": "CalculateFinalPremiumAsync()", "methodShortName": "CalculateFinalPremiumAsync()", "fileIndex": 0, "line": 33,

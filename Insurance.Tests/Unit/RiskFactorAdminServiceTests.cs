@@ -301,4 +301,171 @@ public sealed class RiskFactorAdminServiceTests
 
             _risks.VerifyAll();
         }
+
+        [Test]
+        public async Task CreateAsync_LevelCounty_WhenReferenceMissing_ThrowsValidation()
+        {
+            var req = new CreateRiskFactorConfigurationRequestDTO
+            {
+                Level = RiskFactorLevel.County,
+                ReferenceId = null,
+                AdjustmentPercentage = 0.1m
+            };
+
+            var act = async () => await _sut.CreateAsync(req);
+
+            await act.Should().ThrowAsync<ValidationException>()
+                .WithMessage("ReferenceId must be provided when Level is County.");
+        }
+
+        [Test]
+        public async Task CreateAsync_LevelCity_WhenReferenceMissing_ThrowsValidation()
+        {
+            var req = new CreateRiskFactorConfigurationRequestDTO
+            {
+                Level = RiskFactorLevel.City,
+                ReferenceId = null,
+                AdjustmentPercentage = 0.1m
+            };
+
+            var act = async () => await _sut.CreateAsync(req);
+
+            await act.Should().ThrowAsync<ValidationException>()
+                .WithMessage("ReferenceId must be provided when Level is City.");
+        }
+
+        [Test]
+        public async Task CreateAsync_LevelCounty_WhenBuildingTypeProvided_ThrowsValidation()
+        {
+            _geo.Setup(g => g.CountyExistsAsync(1, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+
+            var req = new CreateRiskFactorConfigurationRequestDTO
+            {
+                Level = RiskFactorLevel.County,
+                ReferenceId = 1,
+                BuildingType = BuildingType.Residential,
+                AdjustmentPercentage = 0.1m
+            };
+
+            var act = async () => await _sut.CreateAsync(req);
+
+            await act.Should().ThrowAsync<ValidationException>()
+                .WithMessage("BuildingType must be null for geographic levels.");
+
+            _geo.VerifyAll();
+        }
+
+        [Test]
+        public async Task CreateAsync_LevelCity_WhenBuildingTypeProvided_ThrowsValidation()
+        {
+            _geo.Setup(g => g.CityExistsAsync(2, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+
+            var req = new CreateRiskFactorConfigurationRequestDTO
+            {
+                Level = RiskFactorLevel.City,
+                ReferenceId = 2,
+                BuildingType = BuildingType.Residential,
+                AdjustmentPercentage = 0.1m
+            };
+
+            var act = async () => await _sut.CreateAsync(req);
+
+            await act.Should().ThrowAsync<ValidationException>()
+                .WithMessage("BuildingType must be null for geographic levels.");
+
+            _geo.VerifyAll();
+        }
+
+        [Test]
+        public async Task CreateAsync_LevelCountry_WhenValid_CreatesAndReturnsId()
+        {
+            _geo.Setup(g => g.CountryExistsAsync(1, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+
+            var entity = new RiskFactorConfiguration { Id = 101 };
+
+            _mapper.Setup(m => m.Map<RiskFactorConfiguration>(It.IsAny<CreateRiskFactorConfigurationRequestDTO>()))
+                   .Returns(entity);
+
+            _risks.Setup(r => r.AddAsync(entity, It.IsAny<CancellationToken>()))
+                  .Returns(Task.CompletedTask);
+            _risks.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()))
+                  .Returns(Task.CompletedTask);
+
+            var id = await _sut.CreateAsync(new CreateRiskFactorConfigurationRequestDTO
+            {
+                Level = RiskFactorLevel.Country,
+                ReferenceId = 1,
+                AdjustmentPercentage = 0.1m
+            });
+
+            id.Should().Be(101);
+
+            _geo.VerifyAll();
+            _mapper.VerifyAll();
+            _risks.VerifyAll();
+        }
+
+        [Test]
+        public async Task CreateAsync_LevelCounty_WhenValid_CreatesAndReturnsId()
+        {
+            _geo.Setup(g => g.CountyExistsAsync(5, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+
+            var entity = new RiskFactorConfiguration { Id = 202 };
+
+            _mapper.Setup(m => m.Map<RiskFactorConfiguration>(It.IsAny<CreateRiskFactorConfigurationRequestDTO>()))
+                   .Returns(entity);
+
+            _risks.Setup(r => r.AddAsync(entity, It.IsAny<CancellationToken>()))
+                  .Returns(Task.CompletedTask);
+            _risks.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()))
+                  .Returns(Task.CompletedTask);
+
+            var id = await _sut.CreateAsync(new CreateRiskFactorConfigurationRequestDTO
+            {
+                Level = RiskFactorLevel.County,
+                ReferenceId = 5,
+                AdjustmentPercentage = 0.15m
+            });
+
+            id.Should().Be(202);
+
+            _geo.VerifyAll();
+            _mapper.VerifyAll();
+            _risks.VerifyAll();
+        }
+
+        [Test]
+        public async Task CreateAsync_LevelCity_WhenValid_CreatesAndReturnsId()
+        {
+            _geo.Setup(g => g.CityExistsAsync(7, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+
+            var entity = new RiskFactorConfiguration { Id = 303 };
+
+            _mapper.Setup(m => m.Map<RiskFactorConfiguration>(It.IsAny<CreateRiskFactorConfigurationRequestDTO>()))
+                   .Returns(entity);
+
+            _risks.Setup(r => r.AddAsync(entity, It.IsAny<CancellationToken>()))
+                  .Returns(Task.CompletedTask);
+            _risks.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()))
+                  .Returns(Task.CompletedTask);
+
+            var id = await _sut.CreateAsync(new CreateRiskFactorConfigurationRequestDTO
+            {
+                Level = RiskFactorLevel.City,
+                ReferenceId = 7,
+                AdjustmentPercentage = 0.2m
+            });
+
+            id.Should().Be(303);
+
+            _geo.VerifyAll();
+            _mapper.VerifyAll();
+            _risks.VerifyAll();
+        }
+
     }

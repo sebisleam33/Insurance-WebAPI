@@ -34,19 +34,59 @@ public sealed class PolicyReportsRepository : IPolicyReportsRepository
             return query;
         }
 
-        public async Task<IReadOnlyList<PoliciesByCountryReportRow>> PoliciesByCountryAsync(PolicyReportQuery query, CancellationToken ct = default)
-        {
-            var q = BaseQuery(query);
+        private sealed record FlatRow(
+            int CurrencyId,
+            string CurrencyCode,
+            decimal FinalPremium,
+            decimal FinalPremiumInBaseCurrency,
 
-            return await q
-                .GroupBy(p => new
-                {
-                    p.Building.City.County.CountryId,
-                    CountryName = p.Building.City.County.Country.Name,
+            int CountryId,
+            string CountryName,
+
+            int CountyId,
+            string CountyName,
+
+            int CityId,
+            string CityName,
+
+            Guid BrokerId,
+            string BrokerCode,
+            string BrokerName
+        );
+
+        private async Task<List<FlatRow>> LoadFlatAsync(PolicyReportQuery query, CancellationToken ct)
+        {
+            return await BaseQuery(query)
+                .Select(p => new FlatRow(
                     p.CurrencyId,
-                    CurrencyCode = p.Currency.Code,
-                    ExchangeRateToBase = p.Currency.ExchangeRateToBase
-                })
+                    p.Currency.Code,
+                    p.FinalPremium,
+                    p.FinalPremium * p.Currency.ExchangeRateToBase,
+
+                    p.Building.City.County.CountryId,
+                    p.Building.City.County.Country.Name,
+
+                    p.Building.City.CountyId,
+                    p.Building.City.County.Name,
+
+                    p.Building.CityId,
+                    p.Building.City.Name,
+
+                    p.BrokerId,
+                    p.Broker.BrokerCode,
+                    p.Broker.Name
+                ))
+                .ToListAsync(ct);
+        }
+
+        public async Task<IReadOnlyList<PoliciesByCountryReportRow>> PoliciesByCountryAsync(
+            PolicyReportQuery query,
+            CancellationToken ct = default)
+        {
+            var flat = await LoadFlatAsync(query, ct);
+
+            return flat
+                .GroupBy(x => new { x.CountryId, x.CountryName, x.CurrencyId, x.CurrencyCode })
                 .Select(g => new PoliciesByCountryReportRow
                 {
                     CountryId = g.Key.CountryId,
@@ -55,26 +95,28 @@ public sealed class PolicyReportsRepository : IPolicyReportsRepository
                     CurrencyCode = g.Key.CurrencyCode,
                     PolicyCount = g.Count(),
                     TotalFinalPremium = g.Sum(x => x.FinalPremium),
-                    TotalFinalPremiumInBaseCurrency = g.Sum(x => x.FinalPremium * x.Currency.ExchangeRateToBase)
+                    TotalFinalPremiumInBaseCurrency = g.Sum(x => x.FinalPremiumInBaseCurrency)
                 })
                 .OrderBy(r => r.CountryName)
                 .ThenBy(r => r.CurrencyCode)
-                .ToListAsync(ct);
+                .ToList();
         }
 
-        public async Task<IReadOnlyList<PoliciesByCountyReportRow>> PoliciesByCountyAsync(PolicyReportQuery query, CancellationToken ct = default)
+        public async Task<IReadOnlyList<PoliciesByCountyReportRow>> PoliciesByCountyAsync(
+            PolicyReportQuery query,
+            CancellationToken ct = default)
         {
-            var q = BaseQuery(query);
+            var flat = await LoadFlatAsync(query, ct);
 
-            return await q
-                .GroupBy(p => new
+            return flat
+                .GroupBy(x => new
                 {
-                    p.Building.City.County.CountryId,
-                    CountryName = p.Building.City.County.Country.Name,
-                    CountyId = p.Building.City.CountyId,
-                    CountyName = p.Building.City.County.Name,
-                    p.CurrencyId,
-                    CurrencyCode = p.Currency.Code
+                    x.CountryId,
+                    x.CountryName,
+                    x.CountyId,
+                    x.CountyName,
+                    x.CurrencyId,
+                    x.CurrencyCode
                 })
                 .Select(g => new PoliciesByCountyReportRow
                 {
@@ -86,29 +128,31 @@ public sealed class PolicyReportsRepository : IPolicyReportsRepository
                     CurrencyCode = g.Key.CurrencyCode,
                     PolicyCount = g.Count(),
                     TotalFinalPremium = g.Sum(x => x.FinalPremium),
-                    TotalFinalPremiumInBaseCurrency = g.Sum(x => x.FinalPremium * x.Currency.ExchangeRateToBase)
+                    TotalFinalPremiumInBaseCurrency = g.Sum(x => x.FinalPremiumInBaseCurrency)
                 })
                 .OrderBy(r => r.CountryName)
                 .ThenBy(r => r.CountyName)
                 .ThenBy(r => r.CurrencyCode)
-                .ToListAsync(ct);
+                .ToList();
         }
 
-        public async Task<IReadOnlyList<PoliciesByCityReportRow>> PoliciesByCityAsync(PolicyReportQuery query, CancellationToken ct = default)
+        public async Task<IReadOnlyList<PoliciesByCityReportRow>> PoliciesByCityAsync(
+            PolicyReportQuery query,
+            CancellationToken ct = default)
         {
-            var q = BaseQuery(query);
+            var flat = await LoadFlatAsync(query, ct);
 
-            return await q
-                .GroupBy(p => new
+            return flat
+                .GroupBy(x => new
                 {
-                    p.Building.City.County.CountryId,
-                    CountryName = p.Building.City.County.Country.Name,
-                    CountyId = p.Building.City.CountyId,
-                    CountyName = p.Building.City.County.Name,
-                    CityId = p.Building.CityId,
-                    CityName = p.Building.City.Name,
-                    p.CurrencyId,
-                    CurrencyCode = p.Currency.Code
+                    x.CountryId,
+                    x.CountryName,
+                    x.CountyId,
+                    x.CountyName,
+                    x.CityId,
+                    x.CityName,
+                    x.CurrencyId,
+                    x.CurrencyCode
                 })
                 .Select(g => new PoliciesByCityReportRow
                 {
@@ -122,28 +166,23 @@ public sealed class PolicyReportsRepository : IPolicyReportsRepository
                     CurrencyCode = g.Key.CurrencyCode,
                     PolicyCount = g.Count(),
                     TotalFinalPremium = g.Sum(x => x.FinalPremium),
-                    TotalFinalPremiumInBaseCurrency = g.Sum(x => x.FinalPremium * x.Currency.ExchangeRateToBase)
+                    TotalFinalPremiumInBaseCurrency = g.Sum(x => x.FinalPremiumInBaseCurrency)
                 })
                 .OrderBy(r => r.CountryName)
                 .ThenBy(r => r.CountyName)
                 .ThenBy(r => r.CityName)
                 .ThenBy(r => r.CurrencyCode)
-                .ToListAsync(ct);
+                .ToList();
         }
 
-        public async Task<IReadOnlyList<PoliciesByBrokerReportRow>> PoliciesByBrokerAsync(PolicyReportQuery query, CancellationToken ct = default)
+        public async Task<IReadOnlyList<PoliciesByBrokerReportRow>> PoliciesByBrokerAsync(
+            PolicyReportQuery query,
+            CancellationToken ct = default)
         {
-            var q = BaseQuery(query);
+            var flat = await LoadFlatAsync(query, ct);
 
-            return await q
-                .GroupBy(p => new
-                {
-                    p.BrokerId,
-                    BrokerCode = p.Broker.BrokerCode,
-                    BrokerName = p.Broker.Name,
-                    p.CurrencyId,
-                    CurrencyCode = p.Currency.Code
-                })
+            return flat
+                .GroupBy(x => new { x.BrokerId, x.BrokerCode, x.BrokerName, x.CurrencyId, x.CurrencyCode })
                 .Select(g => new PoliciesByBrokerReportRow
                 {
                     BrokerId = g.Key.BrokerId,
@@ -153,10 +192,10 @@ public sealed class PolicyReportsRepository : IPolicyReportsRepository
                     CurrencyCode = g.Key.CurrencyCode,
                     PolicyCount = g.Count(),
                     TotalFinalPremium = g.Sum(x => x.FinalPremium),
-                    TotalFinalPremiumInBaseCurrency = g.Sum(x => x.FinalPremium * x.Currency.ExchangeRateToBase)
+                    TotalFinalPremiumInBaseCurrency = g.Sum(x => x.FinalPremiumInBaseCurrency)
                 })
                 .OrderBy(r => r.BrokerCode)
                 .ThenBy(r => r.CurrencyCode)
-                .ToListAsync(ct);
+                .ToList();
         }
     }

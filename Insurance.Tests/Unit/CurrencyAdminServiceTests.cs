@@ -173,4 +173,195 @@ public sealed class CurrencyAdminServiceTests
 
             _repo.VerifyAll();
         }
+
+        [Test]
+        public async Task GetByIdAsync_WhenMissing_ThrowsNotFound_WithExactMessage()
+        {
+            _repo.Setup(r => r.GetByIdAsync(10, false, It.IsAny<CancellationToken>()))
+                 .ReturnsAsync((Currency?)null);
+
+            var act = async () => await _sut.GetByIdAsync(10);
+
+            await act.Should().ThrowAsync<NotFoundException>()
+                .WithMessage("Currency not found.");
+
+            _repo.VerifyAll();
+        }
+
+        [Test]
+        public async Task CreateAsync_WhenCodeEmpty_ThrowsValidation_WithExactMessage()
+        {
+            var act = async () => await _sut.CreateAsync(new CreateCurrencyRequestDTO
+            {
+                Code = "   ",
+                Name = "US Dollar",
+                ExchangeRateToBase = 1.2m,
+                IsActive = true
+            });
+
+            await act.Should().ThrowAsync<ValidationException>()
+                .WithMessage("Code is required.");
+
+            _repo.Verify(r => r.ExistsByCodeAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+            _repo.Verify(r => r.AddAsync(It.IsAny<Currency>(), It.IsAny<CancellationToken>()), Times.Never);
+            _repo.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Test]
+        public async Task CreateAsync_WhenNameEmpty_ThrowsValidation_WithExactMessage()
+        {
+            var act = async () => await _sut.CreateAsync(new CreateCurrencyRequestDTO
+            {
+                Code = "USD",
+                Name = "",
+                ExchangeRateToBase = 1.2m,
+                IsActive = true
+            });
+
+            await act.Should().ThrowAsync<ValidationException>()
+                .WithMessage("Name is required.");
+
+            _repo.Verify(r => r.ExistsByCodeAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+            _repo.Verify(r => r.AddAsync(It.IsAny<Currency>(), It.IsAny<CancellationToken>()), Times.Never);
+            _repo.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Test]
+        public async Task CreateAsync_WhenExchangeRateNonPositive_ThrowsValidation_WithExactMessage()
+        {
+            var act = async () => await _sut.CreateAsync(new CreateCurrencyRequestDTO
+            {
+                Code = "USD",
+                Name = "US Dollar",
+                ExchangeRateToBase = 0m,
+                IsActive = true
+            });
+
+            await act.Should().ThrowAsync<ValidationException>()
+                .WithMessage("ExchangeRateToBase must be positive.");
+
+            _repo.Verify(r => r.ExistsByCodeAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+            _repo.Verify(r => r.AddAsync(It.IsAny<Currency>(), It.IsAny<CancellationToken>()), Times.Never);
+            _repo.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Test]
+        public async Task CreateAsync_WhenDuplicateCode_ThrowsConflict_WithExactMessage()
+        {
+            _repo.Setup(r => r.ExistsByCodeAsync("USD", It.IsAny<CancellationToken>()))
+                 .ReturnsAsync(true);
+
+            var act = async () => await _sut.CreateAsync(new CreateCurrencyRequestDTO
+            {
+                Code = " usd ",
+                Name = "US Dollar",
+                ExchangeRateToBase = 4.5m,
+                IsActive = true
+            });
+
+            await act.Should().ThrowAsync<ConflictException>()
+                .WithMessage("A currency with the same code already exists.");
+
+            _repo.Verify(r => r.AddAsync(It.IsAny<Currency>(), It.IsAny<CancellationToken>()), Times.Never);
+            _repo.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+
+            _repo.VerifyAll();
+        }
+
+        [Test]
+        public async Task UpdateAsync_WhenNameEmpty_ThrowsValidation_AndDoesNotHitRepo()
+        {
+            var act = async () => await _sut.UpdateAsync(1, new UpdateCurrencyRequestDTO
+            {
+                Name = " ",
+                ExchangeRateToBase = 1.1m,
+                IsActive = true
+            });
+
+            await act.Should().ThrowAsync<ValidationException>()
+                .WithMessage("Name is required.");
+
+            _repo.Verify(r => r.GetByIdAsync(It.IsAny<int>(), true, It.IsAny<CancellationToken>()), Times.Never);
+            _repo.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Test]
+        public async Task UpdateAsync_WhenExchangeRateNonPositive_ThrowsValidation_WithExactMessage_AndDoesNotHitRepo()
+        {
+            var act = async () => await _sut.UpdateAsync(1, new UpdateCurrencyRequestDTO
+            {
+                Name = "EUR",
+                ExchangeRateToBase = 0m,
+                IsActive = true
+            });
+
+            await act.Should().ThrowAsync<ValidationException>()
+                .WithMessage("ExchangeRateToBase must be positive.");
+
+            _repo.Verify(r => r.GetByIdAsync(It.IsAny<int>(), true, It.IsAny<CancellationToken>()), Times.Never);
+            _repo.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Test]
+        public async Task UpdateAsync_WhenDeactivatingAndUsed_ThrowsBusinessRule_WithExactMessage()
+        {
+            var entity = new Currency
+            {
+                Id = 1,
+                Code = "USD",
+                Name = "US Dollar",
+                ExchangeRateToBase = 1.2m,
+                IsActive = true
+            };
+
+            _repo.Setup(r => r.GetByIdAsync(1, true, It.IsAny<CancellationToken>()))
+                 .ReturnsAsync(entity);
+
+            _repo.Setup(r => r.IsUsedInActivePoliciesAsync(1, It.IsAny<CancellationToken>()))
+                 .ReturnsAsync(true);
+
+            var act = async () => await _sut.UpdateAsync(1, new UpdateCurrencyRequestDTO
+            {
+                Name = "US Dollar",
+                ExchangeRateToBase = 1.3m,
+                IsActive = false
+            });
+
+            await act.Should().ThrowAsync<BusinessRuleException>()
+                .WithMessage("Cannot deactivate a currency that is used in active policies.");
+
+            _repo.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+            _repo.VerifyAll();
+        }
+
+        [Test]
+        public async Task UpdateAsync_WhenEntityAlreadyInactive_DoesNotCheckPolicyUsage()
+        {
+            var entity = new Currency
+            {
+                Id = 1,
+                Code = "USD",
+                Name = "US Dollar",
+                ExchangeRateToBase = 1.2m,
+                IsActive = false
+            };
+
+            _repo.Setup(r => r.GetByIdAsync(1, true, It.IsAny<CancellationToken>()))
+                 .ReturnsAsync(entity);
+
+            _repo.Setup(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()))
+                 .Returns(Task.CompletedTask);
+
+            await _sut.UpdateAsync(1, new UpdateCurrencyRequestDTO
+            {
+                Name = " Updated ",
+                ExchangeRateToBase = 2.0m,
+                IsActive = false
+            });
+
+            entity.Name.Should().Be("Updated");
+
+            _repo.Verify(r => r.IsUsedInActivePoliciesAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Never);
+            _repo.VerifyAll();
+        }
     }

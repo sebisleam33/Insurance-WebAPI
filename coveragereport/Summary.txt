@@ -1,28 +1,28 @@
 Summary
-  Generated on: 2/2/2026 - 4:28:46 PM
+  Generated on: 2/16/2026 - 1:40:01 PM
   Parser: Cobertura
   Assemblies: 3
-  Classes: 32
-  Files: 31
-  Line coverage: 96.2%
-  Covered lines: 838
-  Uncovered lines: 33
-  Coverable lines: 871
-  Total lines: 1529
-  Branch coverage: 88.6% (298 of 336)
-  Covered branches: 298
-  Total branches: 336
-  Method coverage: 100% (297 of 297)
-  Full method coverage: 95.6% (284 of 297)
-  Covered methods: 297
-  Fully covered methods: 284
-  Total methods: 297
+  Classes: 38
+  Files: 37
+  Line coverage: 98.4%
+  Covered lines: 1000
+  Uncovered lines: 16
+  Coverable lines: 1016
+  Total lines: 1791
+  Branch coverage: 94% (314 of 334)
+  Covered branches: 314
+  Total branches: 334
+  Method coverage: 100% (390 of 390)
+  Full method coverage: 97.9% (382 of 390)
+  Covered methods: 390
+  Fully covered methods: 382
+  Total methods: 390
 
 Insurance.Api                                                                      100%
   Insurance.Api.Middleware.ExceptionHandlingMiddleware                             100%
   Insurance.Api.Middleware.ExceptionHandlingMiddleware.ErrorResponse               100%
 
-Insurance.Application                                                             95.4%
+Insurance.Application                                                               98%
   Insurance.Api.Mapping.ApiMappingProfile                                          100%
   Insurance.Application.Common.Exceptions.AppException                             100%
   Insurance.Application.Common.Exceptions.BusinessRuleException                    100%
@@ -33,15 +33,16 @@ Insurance.Application                                                           
   Insurance.Application.Common.Exceptions.ValidationException                      100%
   Insurance.Application.Common.PagedResult<T>                                      100%
   Insurance.Application.Common.Validation.ValidationHelpers                        100%
-  Insurance.Application.Services.Implementations.BrokerAdminService               92.6%
+  Insurance.Application.Services.Implementations.BrokerAdminService                100%
   Insurance.Application.Services.Implementations.BuildingService                  93.5%
   Insurance.Application.Services.Implementations.ClientService                    91.3%
-  Insurance.Application.Services.Implementations.CurrencyAdminService             94.6%
+  Insurance.Application.Services.Implementations.CurrencyAdminService             98.3%
   Insurance.Application.Services.Implementations.FeeConfigurationAdminService      100%
   Insurance.Application.Services.Implementations.GeographyService                  100%
   Insurance.Application.Services.Implementations.PolicyPremiumCalculatorService    100%
-  Insurance.Application.Services.Implementations.PolicyService                    97.5%
-  Insurance.Application.Services.Implementations.RiskFactorAdminService           88.4%
+  Insurance.Application.Services.Implementations.PolicyReportsService              100%
+  Insurance.Application.Services.Implementations.PolicyService                    98.4%
+  Insurance.Application.Services.Implementations.RiskFactorAdminService            100%
 
 Insurance.Domain                                                                   100%
   Insurance.Domain.Entities.Broker                                                 100%
@@ -55,3 +56,8 @@ Insurance.Domain                                                                
   Insurance.Domain.Entities.Metadata.FeeConfiguration                              100%
   Insurance.Domain.Entities.Metadata.RiskFactorConfiguration                       100%
   Insurance.Domain.Entities.Policy                                                 100%
+  Insurance.Domain.Entities.Reports.PoliciesByBrokerReportRow                      100%
+  Insurance.Domain.Entities.Reports.PoliciesByCityReportRow                        100%
+  Insurance.Domain.Entities.Reports.PoliciesByCountryReportRow                     100%
+  Insurance.Domain.Entities.Reports.PoliciesByCountyReportRow                      100%
+  Insurance.Domain.Entities.Reports.PolicyReportQuery                              100%
