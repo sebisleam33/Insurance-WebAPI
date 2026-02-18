@@ -1,4 +1,5 @@
 ﻿using Insurance.Domain.Entities;
+using Insurance.Domain.Entities.Auth;
 using Insurance.Domain.Entities.Geography;
 using Insurance.Domain.Entities.Metadata;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace Insurance.Infrastructure.Persistence;
         public DbSet<FeeConfiguration> FeeConfigurations => Set<FeeConfiguration>();
         public DbSet<RiskFactorConfiguration> RiskFactorConfigurations => Set<RiskFactorConfiguration>();
         public DbSet<ClientIdentifierChange> ClientIdentifierChanges => Set<ClientIdentifierChange>();
+        public DbSet<AdminUser> AdminUsers => Set<AdminUser>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -151,6 +153,19 @@ namespace Insurance.Infrastructure.Persistence;
                     .WithMany(cu => cu.Policies)
                     .HasForeignKey(x => x.CurrencyId)
                     .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<AdminUser>(b =>
+            {
+                b.HasKey(x => x.Id);
+                b.Property(x => x.Email).IsRequired();
+                b.HasIndex(x => x.Email).IsUnique();
+
+                b.Property(x => x.PasswordHash).IsRequired();
+                b.Property(x => x.PasswordSalt).IsRequired();
+
+                b.Property(x => x.IsActive).IsRequired();
+                b.Property(x => x.CreatedAtUtc).IsRequired();
             });
         }
     }

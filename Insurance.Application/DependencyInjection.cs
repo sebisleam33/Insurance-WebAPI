@@ -1,4 +1,5 @@
-﻿using Insurance.Application.Services.Implementations;
+﻿using Insurance.Application.Security;
+using Insurance.Application.Services.Implementations;
 using Insurance.Application.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +19,8 @@ public static class DependencyInjection
             services.AddScoped<IFeeConfigurationAdminService, FeeConfigurationAdminService>();
             services.AddScoped<IRiskFactorAdminService, RiskFactorAdminService>();
             services.AddScoped<IPolicyReportsService, PolicyReportsService>();
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
 
-            return services;
+        return services;
         }
     }

@@ -1,9 +1,11 @@
 ﻿using Insurance.Application.Common.DTOs.AdminDTOs.BrokerDTOs;
 using Insurance.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Insurance.Api.Controllers.Admin;
 
+[Authorize(Roles = "Admin")]
 [ApiController]
 [Route("api/admin/brokers")]
 public sealed class BrokersController : ControllerBase

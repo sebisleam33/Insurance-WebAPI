@@ -1,10 +1,12 @@
 ﻿using Insurance.Application.Common.DTOs.AdminDTOs.ReportDTOs;
 using Insurance.Application.Services.Interfaces;
 using Insurance.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Insurance.Api.Controllers.Admin;
 
+[Authorize(Roles = "Admin")]
 [ApiController]
 [Route("api/admin/reports")]
 public sealed class ReportsController : ControllerBase

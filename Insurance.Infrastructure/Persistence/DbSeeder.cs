@@ -1,4 +1,6 @@
-﻿using Insurance.Domain.Entities;
+﻿using Insurance.Domain;
+using Insurance.Domain.Entities;
+using Insurance.Domain.Entities.Auth;
 using Insurance.Domain.Entities.Geography;
 using Insurance.Domain.Entities.Metadata;
 using Insurance.Domain.Enums;
@@ -95,6 +97,22 @@ namespace Insurance.Infrastructure.Persistence;
                     Phone = "0000",
                     Status = BrokerStatus.Active,
                     CommissionPercentage = null
+                });
+
+                await db.SaveChangesAsync(ct);
+            }
+
+            if (!await db.AdminUsers.AnyAsync(ct))
+            {
+                var (hash, salt) = PasswordHasher.Hash("Admin123!"); // dev default
+
+                db.AdminUsers.Add(new AdminUser
+                {
+                    Email = "admin@local",
+                    PasswordHash = hash,
+                    PasswordSalt = salt,
+                    IsActive = true,
+                    CreatedAtUtc = DateTime.UtcNow
                 });
 
                 await db.SaveChangesAsync(ct);
