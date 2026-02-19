@@ -23,6 +23,14 @@ public sealed class PoliciesFlowTests
         {
             _factory = new CustomWebApplicationFactory();
             _client = _factory.CreateClient();
+
+            var token = TestJwtFactory.CreateAdminToken(
+                    key: _factory.JwtKey,
+                    issuer: _factory.JwtIssuer,
+                    audience: _factory.JwtAudience);
+
+            _client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
 
         [TearDown]
