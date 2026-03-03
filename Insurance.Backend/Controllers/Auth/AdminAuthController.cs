@@ -30,10 +30,14 @@ public sealed class AdminAuthController : ControllerBase
                 .FirstOrDefaultAsync(x => x.Email == req.Email && x.IsActive, ct);
 
             if (admin is null)
+            {
                 return Unauthorized("Invalid credentials.");
+            }
 
             if (!PasswordHasher.Verify(req.Password, admin.PasswordHash, admin.PasswordSalt))
+            {
                 return Unauthorized("Invalid credentials.");
+            }
 
             var claims = new List<Claim>
             {

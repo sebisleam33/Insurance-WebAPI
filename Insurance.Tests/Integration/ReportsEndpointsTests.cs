@@ -232,7 +232,9 @@ public sealed class ReportsEndpointsTests
                 .FirstOrDefaultAsync(c => c.Name == "Bucharest");
 
             if (existingCity is not null)
+            {
                 return existingCity.Id;
+            }
 
             var country = await db.Countries.FirstOrDefaultAsync(c => c.Name == "Romania")
                           ?? (await db.Countries.AddAsync(new Country { Name = "Romania" })).Entity;
