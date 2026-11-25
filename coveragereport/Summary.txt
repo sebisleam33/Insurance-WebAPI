@@ -1,55 +1,46 @@
 Summary
-  Generated on: 1/21/2026 - 10:33:14 AM
+  Generated on: 2/19/2026 - 11:10:06 AM
   Parser: Cobertura
-  Assemblies: 4
-  Classes: 28
-  Files: 27
-  Line coverage: 96.8%
-  Covered lines: 515
-  Uncovered lines: 17
-  Coverable lines: 532
-  Total lines: 994
-  Branch coverage: 97.7% (131 of 134)
-  Covered branches: 131
-  Total branches: 134
-  Method coverage: 99.5% (204 of 205)
-  Full method coverage: 95.6% (196 of 205)
-  Covered methods: 204
-  Fully covered methods: 196
-  Total methods: 205
+  Assemblies: 2
+  Classes: 23
+  Files: 22
+  Line coverage: 98.2%
+  Covered lines: 887
+  Uncovered lines: 16
+  Coverable lines: 903
+  Total lines: 1574
+  Branch coverage: 94% (318 of 338)
+  Covered branches: 318
+  Total branches: 338
+  Method coverage: 100% (116 of 116)
+  Full method coverage: 93.1% (108 of 116)
+  Covered methods: 116
+  Fully covered methods: 108
+  Total methods: 116
 
-Insurance.Api                                                                   96%
-  Insurance.Api.Controllers.Brokers.BuildingsController                       81.8%
-  Insurance.Api.Controllers.Brokers.ClientsController                           80%
-  Insurance.Api.Controllers.Brokers.GeographyController                        100%
-  Insurance.Api.Mapping.ApiMappingProfile                                      100%
-  Insurance.Api.Middleware.ExceptionHandlingMiddleware                         100%
-  Insurance.Api.Middleware.ExceptionHandlingMiddleware.ErrorResponse           100%
+Insurance.Api                                                                      100%
+  Insurance.Api.Middleware.ExceptionHandlingMiddleware                             100%
+  Insurance.Api.Middleware.ExceptionHandlingMiddleware.ErrorResponse               100%
 
-Insurance.Application                                                         94.2%
-  Insurance.Application.Common.Exceptions.AppException                         100%
-  Insurance.Application.Common.Exceptions.BusinessRuleException                100%
-  Insurance.Application.Common.Exceptions.ConflictException                    100%
-  Insurance.Application.Common.Exceptions.ForbiddenException                   100%
-  Insurance.Application.Common.Exceptions.NotFoundException                    100%
-  Insurance.Application.Common.Exceptions.UnauthorizedException                100%
-  Insurance.Application.Common.Exceptions.ValidationException                  100%
-  Insurance.Application.Common.PagedResult<T>                                  100%
-  Insurance.Application.Common.Validation.ValidationHelpers                    100%
-  Insurance.Application.Services.Implementations.BuildingService                93%
-  Insurance.Application.Services.Implementations.ClientService                91.9%
-  Insurance.Application.Services.Implementations.GeographyService              100%
-
-Insurance.Domain                                                               100%
-  Insurance.Domain.Entities.Building                                           100%
-  Insurance.Domain.Entities.Client                                             100%
-  Insurance.Domain.Entities.ClientIdentifierChange                             100%
-  Insurance.Domain.Entities.Geography.City                                     100%
-  Insurance.Domain.Entities.Geography.Country                                  100%
-  Insurance.Domain.Entities.Geography.County                                   100%
-
-Insurance.Infrastructure                                                       100%
-  Insurance.Infrastructure.Persistence.AppDbContext                            100%
-  Insurance.Infrastructure.Repositories.Implementations.BuildingRepository     100%
-  Insurance.Infrastructure.Repositories.Implementations.ClientRepository       100%
-  Insurance.Infrastructure.Repositories.Implementations.GeographyRepository    100%
+Insurance.Application                                                             98.1%
+  Insurance.Api.Mapping.ApiMappingProfile                                          100%
+  Insurance.Application.Common.Exceptions.AppException                             100%
+  Insurance.Application.Common.Exceptions.BusinessRuleException                    100%
+  Insurance.Application.Common.Exceptions.ConflictException                        100%
+  Insurance.Application.Common.Exceptions.ForbiddenException                       100%
+  Insurance.Application.Common.Exceptions.NotFoundException                        100%
+  Insurance.Application.Common.Exceptions.UnauthorizedException                    100%
+  Insurance.Application.Common.Exceptions.ValidationException                      100%
+  Insurance.Application.Common.PagedResult<T>                                      100%
+  Insurance.Application.Common.Validation.ValidationHelpers                        100%
+  Insurance.Application.Security.JwtTokenService                                   100%
+  Insurance.Application.Services.Implementations.BrokerAdminService                100%
+  Insurance.Application.Services.Implementations.BuildingService                  93.5%
+  Insurance.Application.Services.Implementations.ClientService                    91.3%
+  Insurance.Application.Services.Implementations.CurrencyAdminService             98.3%
+  Insurance.Application.Services.Implementations.FeeConfigurationAdminService      100%
+  Insurance.Application.Services.Implementations.GeographyService                  100%
+  Insurance.Application.Services.Implementations.PolicyPremiumCalculatorService    100%
+  Insurance.Application.Services.Implementations.PolicyReportsService              100%
+  Insurance.Application.Services.Implementations.PolicyService                    98.4%
+  Insurance.Application.Services.Implementations.RiskFactorAdminService            100%

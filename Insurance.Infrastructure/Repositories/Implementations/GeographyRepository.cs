@@ -10,8 +10,12 @@ namespace Insurance.Infrastructure.Repositories.Implementations
         private readonly AppDbContext _db;
         public GeographyRepository(AppDbContext db) => _db = db;
 
+        public Task<bool> CountryExistsAsync(int countryId, CancellationToken ct = default)
+            => _db.Countries.AnyAsync(x => x.Id == countryId, ct);
+        public Task<bool> CountyExistsAsync(int countyId, CancellationToken ct = default)
+            => _db.Counties.AnyAsync(x => x.Id == countyId, ct);
         public Task<bool> CityExistsAsync(int cityId, CancellationToken ct = default)
-            => _db.Cities.AnyAsync(x => x.Id == cityId);
+            => _db.Cities.AnyAsync(x => x.Id == cityId, ct);
 
         public async Task<IReadOnlyList<Country>> GetCountriesAsync(CancellationToken ct = default)
             => await _db.Countries.AsNoTracking().OrderBy(x => x.Name).ToListAsync(ct);

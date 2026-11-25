@@ -13,6 +13,6 @@ namespace Insurance.Domain.Entities;
 
         public ICollection<Building> Buildings { get; set; } = new List<Building>();
         public ICollection<ClientIdentifierChange> IdentifierChanges { get; set; } = new List<ClientIdentifierChange>();
-
+        public ICollection<Policy> Policies { get; set; } = new List<Policy>();
     }
 

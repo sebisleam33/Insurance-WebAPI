@@ -26,4 +26,6 @@ namespace Insurance.Domain.Entities;
 
         public bool? IsFloodZone { get; set; }
         public int? EarthquakeRiskZone { get; set; }
+
+        public ICollection<Policy> Policies { get; set; } = new List<Policy>();
     }

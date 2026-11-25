@@ -74,4 +74,54 @@ namespace Insurance.Tests.Unit.Validation;
             Action act = () => ValidationHelpers.ValidateEmailIfProvided("a@b.com");
             act.Should().NotThrow();
         }
+
+        [Test]
+        public void RequireFromTo_FromDefault_Throws()
+        {
+            var from = default(DateTime);
+            var to = new DateTime(2025, 1, 2, 0, 0, 0, DateTimeKind.Utc);
+
+            Action act = () => ValidationHelpers.RequireFromTo(from, to, "From", "To");
+
+            act.Should()
+               .Throw<ValidationException>()
+               .WithMessage("From is required.");
+        }
+
+        [Test]
+        public void RequireFromTo_ToDefault_Throws()
+        {
+            var from = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var to = default(DateTime);
+
+            Action act = () => ValidationHelpers.RequireFromTo(from, to, "From", "To");
+
+            act.Should()
+               .Throw<ValidationException>()
+               .WithMessage("To is required.");
+        }
+
+        [Test]
+        public void RequireFromTo_ToBeforeFrom_Throws()
+        {
+            var from = new DateTime(2025, 1, 2, 0, 0, 0, DateTimeKind.Utc);
+            var to = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+            Action act = () => ValidationHelpers.RequireFromTo(from, to, "From", "To");
+
+            act.Should()
+               .Throw<ValidationException>()
+               .WithMessage("To must be after From");
+        }
+
+        [Test]
+        public void RequireFromTo_Valid_DoesNotThrow()
+        {
+            var from = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var to = new DateTime(2025, 1, 2, 0, 0, 0, DateTimeKind.Utc);
+
+            Action act = () => ValidationHelpers.RequireFromTo(from, to, "From", "To");
+
+            act.Should().NotThrow();
+        }
     }

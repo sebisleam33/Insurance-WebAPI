@@ -7,6 +7,7 @@ using Insurance.Application.Common.Validation;
 using Insurance.Application.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 using Insurance.Domain.Entities;
+using Insurance.Application.Common.DTOs.BuildingDTOs;
 
 namespace Insurance.Application.Services.Implementations;
 
@@ -83,7 +84,7 @@ public sealed class ClientService : IClientService
             Email = client.Email,
             Phone = client.Phone,
             PrimaryAddress = client.PrimaryAddress,
-            Buildings = buildings.Select(b => _mapper.Map<Insurance.Application.Common.DTOs.BuildingDTOs.BuildingListItemResponseDTO>(b)).ToList()
+            Buildings = buildings.Select(b => _mapper.Map<BuildingListItemResponseDTO>(b)).ToList()
         };
 
         return response;

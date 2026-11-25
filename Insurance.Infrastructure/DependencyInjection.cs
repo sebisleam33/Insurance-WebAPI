@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Insurance.Infrastructure;
 
-    public static class DependencyInjection
+public static class DependencyInjection
     {
         public static IServiceCollection AddInfrastructure(
             this IServiceCollection services,
@@ -24,6 +24,12 @@ namespace Insurance.Infrastructure;
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IBuildingRepository, BuildingRepository>();
             services.AddScoped<IGeographyRepository, GeographyRepository>();
+            services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+            services.AddScoped<IPolicyRepository, PolicyRepository>();
+            services.AddScoped<IFeeConfigurationRepository, FeeConfigurationRepository>();
+            services.AddScoped<IRiskFactorConfigurationRepository, RiskFactorConfigurationRepository>();
+            services.AddScoped<IBrokerRepository, BrokerRepository>();
+            services.AddScoped<IPolicyReportsRepository, PolicyReportsRepository>();
 
             return services;
         }
